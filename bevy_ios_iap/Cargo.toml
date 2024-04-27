@@ -1,0 +1,15 @@
+[package]
+name = "bevy_ios_iap"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[lib]
+crate-type = ["staticlib", "rlib"]
+
+[dependencies]
+bevy = { version = "0.13", default-features = false }
+swift-bridge = "0.1"
+
+[build-dependencies]
+swift-bridge-build = "0.1"
