@@ -1,6 +1,8 @@
 use std::sync::OnceLock;
 
 use bevy_crossbeam_event::CrossbeamEventSender;
+
+#[allow(unused_imports)]
 pub use ffi::*;
 
 use crate::plugin::IosIapEvents;
@@ -51,6 +53,7 @@ mod ffi {
 
 static SENDER: OnceLock<Option<CrossbeamEventSender<IosIapEvents>>> = OnceLock::new();
 
+#[allow(dead_code)]
 pub fn set_sender(sender: CrossbeamEventSender<IosIapEvents>) {
     while !SENDER.set(Some(sender.clone())).is_ok() {}
 }

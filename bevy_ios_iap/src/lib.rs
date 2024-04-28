@@ -1,6 +1,8 @@
+mod methods;
 mod native;
 mod plugin;
 
+pub use methods::{get_products, purchase};
 pub use plugin::{IosIapEvents, IosIapPlugin};
 
 #[derive(Debug, Clone)]
@@ -78,14 +80,4 @@ impl IosIapProduct {
             product_type,
         }
     }
-}
-
-pub fn get_products(products: Vec<String>) {
-    #[cfg(target_os = "ios")]
-    native::ios_iap_products(products);
-}
-
-pub fn purchase(id: String) {
-    #[cfg(target_os = "ios")]
-    native::ios_iap_purchase(id);
 }
