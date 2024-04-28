@@ -1,14 +1,105 @@
 public func products_received(_ products: RustVec<IosIapProduct>) {
     __swift_bridge__$products_received({ let val = products; val.isOwned = false; return val.ptr }())
 }
-@_cdecl("__swift_bridge__$bevy_ios_iap_swift_init")
-func __swift_bridge__bevy_ios_iap_swift_init (_ foo: UnsafeMutableRawPointer, _ products: UnsafeMutableRawPointer) {
-    bevy_ios_iap_swift_init(foo: RustString(ptr: foo), products: RustVec(ptr: products))
+public func purchase_processed(_ result: IosIapPurchaseResult) {
+    __swift_bridge__$purchase_processed({result.isOwned = false; return result.ptr;}())
+}
+@_cdecl("__swift_bridge__$ios_iap_products")
+func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
+    ios_iap_products(products: RustVec(ptr: products))
 }
 
 @_cdecl("__swift_bridge__$ios_iap_purchase")
 func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
     ios_iap_purchase(id: RustString(ptr: id))
+}
+
+
+public class IosIapPurchaseResult: IosIapPurchaseResultRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapPurchaseResult$_free(ptr)
+        }
+    }
+}
+public class IosIapPurchaseResultRefMut: IosIapPurchaseResultRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapPurchaseResultRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapPurchaseResultRef {
+    class public func success() -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$success())
+    }
+
+    class public func canceled() -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$canceled())
+    }
+
+    class public func pending() -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$pending())
+    }
+}
+extension IosIapPurchaseResult: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapPurchaseResult$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapPurchaseResult$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapPurchaseResult) {
+        __swift_bridge__$Vec_IosIapPurchaseResult$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapPurchaseResult$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapPurchaseResult(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapPurchaseResultRef> {
+        let pointer = __swift_bridge__$Vec_IosIapPurchaseResult$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapPurchaseResultRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapPurchaseResultRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapPurchaseResult$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapPurchaseResultRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapPurchaseResultRef> {
+        UnsafePointer<IosIapPurchaseResultRef>(OpaquePointer(__swift_bridge__$Vec_IosIapPurchaseResult$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapPurchaseResult$len(vecPtr)
+    }
 }
 
 

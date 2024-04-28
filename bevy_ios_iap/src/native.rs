@@ -1,60 +1,10 @@
+use std::sync::OnceLock;
+
+use bevy_crossbeam_event::CrossbeamEventSender;
 pub use ffi::*;
 
-#[derive(Debug)]
-pub enum IosIapProductType {
-    Consumable,
-    NonConsumable,
-    NonRenewable,
-    AutoRenewable,
-}
-
-impl IosIapProductType {
-    fn new_consumable(non: bool) -> Self {
-        if non {
-            Self::NonConsumable
-        } else {
-            Self::Consumable
-        }
-    }
-
-    fn new_non_renewable() -> Self {
-        Self::NonRenewable
-    }
-
-    fn new_auto_renewable() -> Self {
-        Self::AutoRenewable
-    }
-}
-
-#[derive(Debug)]
-pub struct IosIapProduct {
-    pub id: String,
-    pub display_price: String,
-    pub display_name: String,
-    pub description: String,
-    pub price: f64,
-    pub product_type: IosIapProductType,
-}
-
-impl IosIapProduct {
-    fn new(
-        id: String,
-        display_price: String,
-        display_name: String,
-        description: String,
-        price: f64,
-        product_type: IosIapProductType,
-    ) -> Self {
-        Self {
-            id,
-            display_price,
-            display_name,
-            description,
-            price,
-            product_type,
-        }
-    }
-}
+use crate::plugin::IosIapEvents;
+use crate::{IosIapProduct, IosIapProductType, IosIapPurchaseResult};
 
 #[swift_bridge::bridge]
 mod ffi {
@@ -62,6 +12,7 @@ mod ffi {
     extern "Rust" {
         type IosIapProduct;
         type IosIapProductType;
+        type IosIapPurchaseResult;
 
         #[swift_bridge(associated_to = IosIapProduct)]
         fn new(
@@ -80,20 +31,51 @@ mod ffi {
         #[swift_bridge(associated_to = IosIapProductType)]
         fn new_auto_renewable() -> IosIapProductType;
 
+        #[swift_bridge(associated_to = IosIapPurchaseResult)]
+        fn success() -> IosIapPurchaseResult;
+        #[swift_bridge(associated_to = IosIapPurchaseResult)]
+        fn canceled() -> IosIapPurchaseResult;
+        #[swift_bridge(associated_to = IosIapPurchaseResult)]
+        fn pending() -> IosIapPurchaseResult;
+
         fn products_received(products: Vec<IosIapProduct>);
+        fn purchase_processed(result: IosIapPurchaseResult);
     }
 
     extern "Swift" {
 
-        pub fn bevy_ios_iap_swift_init(foo: String, products: Vec<String>);
+        pub fn ios_iap_products(products: Vec<String>);
         pub fn ios_iap_purchase(id: String);
-        // async fn bevy_ios_iap_swift_get_products(products: Vec<String>) -> Vec<Product>;
     }
 }
 
+static SENDER: OnceLock<Option<CrossbeamEventSender<IosIapEvents>>> = OnceLock::new();
+
+pub fn set_sender(sender: CrossbeamEventSender<IosIapEvents>) {
+    while !SENDER.set(Some(sender.clone())).is_ok() {}
+}
+
 fn products_received(products: Vec<IosIapProduct>) {
-    bevy_log::info!("items: {:?}", products.len());
-    for p in products {
-        bevy_log::info!("product: {p:?}");
-    }
+    // bevy_log::info!("items: {:?}", products.len());
+    // for p in products {
+    //     bevy_log::info!("product: {p:?}");
+    // }
+
+    SENDER
+        .get()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .send(IosIapEvents::Products(products));
+}
+
+fn purchase_processed(result: IosIapPurchaseResult) {
+    // bevy_log::info!("purchase_processed: {:?}", result as u8);
+
+    SENDER
+        .get()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .send(IosIapEvents::Purchase(result));
 }

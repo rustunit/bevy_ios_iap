@@ -9,14 +9,16 @@ import StoreKit
 import RustXcframework
 
 
-public func bevy_ios_iap_swift_init(foo: RustString, products:RustVec<RustString>)
+public func ios_iap_products(products:RustVec<RustString>)
 {
-    print("bevy_ios_iap_swift_init: \(foo.toString())")
-    
     Task {
-        let productIds = ["com.rustunit.zoolitaire.levelunlock"]
+        var productIds:[String] = []
+        for p in products {
+            productIds.append(p.as_str().toString())
+        }
+        
         let products = try await Product.products(for: productIds)
-        print("products:\n \(products)")
+//        print("products:\n \(products)")
         
         let rust_products = RustVec<IosIapProduct>()
         
@@ -44,6 +46,17 @@ public func ios_iap_purchase(id: RustString)
         let productIds = [id.toString()]
         let products = try await Product.products(for: productIds)
         let purchase  = try! await products[0].purchase()
-        print("purchase:\n \(purchase)")
+//        print("purchase:\n \(purchase)")
+        
+        let result = switch purchase {
+        case .success(_):
+            IosIapPurchaseResult.success()
+        case .userCancelled:
+            IosIapPurchaseResult.canceled()
+        case .pending:
+            IosIapPurchaseResult.pending()
+        }
+        
+        purchase_processed(result)
    }
 }
