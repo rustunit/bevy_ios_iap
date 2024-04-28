@@ -1,4 +1,3 @@
-import RustXcframework 
 public func products_received(_ products: RustVec<IosIapProduct>) {
     __swift_bridge__$products_received({ let val = products; val.isOwned = false; return val.ptr }())
 }

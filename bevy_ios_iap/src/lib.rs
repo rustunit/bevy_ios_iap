@@ -1,25 +1,14 @@
+mod native;
+
 pub fn init() {
-    bevy_ios_iap_swift_init(
+    #[cfg(target_os = "ios")]
+    native::bevy_ios_iap_swift_init(
         "foo".into(),
         vec!["com.rustunit.zoolitaire.levelunlock".into()],
     );
 }
 
-use ffi::bevy_ios_iap_swift_init;
-
-type Foo = Box<dyn FnOnce(u8, i32) -> bool>;
-
-#[swift_bridge::bridge]
-mod ffi {
-
-    // #[swift_bridge(swift_repr = "struct")]
-    // struct Config {
-    //     products: Vec<String>,
-    // }
-
-    extern "Swift" {
-
-        //
-        fn bevy_ios_iap_swift_init(foo: String, products: Vec<String>);
-    }
+pub fn purchase(id: String) {
+    #[cfg(target_os = "ios")]
+    native::ios_iap_purchase(id);
 }

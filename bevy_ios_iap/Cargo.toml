@@ -8,7 +8,7 @@ build = "build.rs"
 crate-type = ["staticlib", "rlib"]
 
 [dependencies]
-bevy = { version = "0.13", default-features = false }
+bevy_log = { version = "0.13", default-features = false }
 swift-bridge = "0.1"
 
 [build-dependencies]
