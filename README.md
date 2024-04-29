@@ -9,8 +9,12 @@
 * fetch list of all transactions (to restore old purchases)
 
 ## TODOs
+* support subscription product type
 * catch exceptions in swift functions and report errors to rust
 * allow access to signature for remote verification
+* support offers
+* support family sharing
+* transaction revocation reason
 
 ## Swift-Bridge wishlist
 * support derives(Clone,Debug) on shared enums
