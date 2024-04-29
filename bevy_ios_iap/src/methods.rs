@@ -12,3 +12,8 @@ pub fn purchase(id: String) {
     #[cfg(target_os = "ios")]
     native::ios_iap_purchase(id);
 }
+
+pub fn finish_transaction(id: u64) {
+    #[cfg(target_os = "ios")]
+    native::ios_iap_transaction_finish(id);
+}

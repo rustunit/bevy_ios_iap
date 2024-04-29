@@ -5,6 +5,14 @@ public func products_received(_ products: RustVec<IosIapProduct>) {
 public func purchase_processed(_ result: IosIapPurchaseResult) {
     __swift_bridge__$purchase_processed({result.isOwned = false; return result.ptr;}())
 }
+public func transaction_update(_ t: IosIapTransaction) {
+    __swift_bridge__$transaction_update({t.isOwned = false; return t.ptr;}())
+}
+@_cdecl("__swift_bridge__$ios_iap_init")
+func __swift_bridge__ios_iap_init () {
+    ios_iap_init()
+}
+
 @_cdecl("__swift_bridge__$ios_iap_products")
 func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
     ios_iap_products(products: RustVec(ptr: products))
@@ -13,6 +21,351 @@ func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
 @_cdecl("__swift_bridge__$ios_iap_purchase")
 func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
     ios_iap_purchase(id: RustString(ptr: id))
+}
+
+@_cdecl("__swift_bridge__$ios_iap_transaction_finish")
+func __swift_bridge__ios_iap_transaction_finish (_ id: UInt64) {
+    ios_iap_transaction_finish(id: id)
+}
+
+
+public class IosIapStorefront: IosIapStorefrontRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapStorefront$_free(ptr)
+        }
+    }
+}
+extension IosIapStorefront {
+    class public func storefront<GenericIntoRustString: IntoRustString>(_ id: GenericIntoRustString, _ country_code: GenericIntoRustString) -> IosIapStorefront {
+        IosIapStorefront(ptr: __swift_bridge__$IosIapStorefront$storefront({ let rustString = id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), { let rustString = country_code.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+}
+public class IosIapStorefrontRefMut: IosIapStorefrontRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapStorefrontRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapStorefront: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapStorefront$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapStorefront$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapStorefront) {
+        __swift_bridge__$Vec_IosIapStorefront$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapStorefront$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapStorefront(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapStorefrontRef> {
+        let pointer = __swift_bridge__$Vec_IosIapStorefront$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapStorefrontRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapStorefrontRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapStorefront$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapStorefrontRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapStorefrontRef> {
+        UnsafePointer<IosIapStorefrontRef>(OpaquePointer(__swift_bridge__$Vec_IosIapStorefront$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapStorefront$len(vecPtr)
+    }
+}
+
+
+public class IosIapEnvironment: IosIapEnvironmentRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapEnvironment$_free(ptr)
+        }
+    }
+}
+public class IosIapEnvironmentRefMut: IosIapEnvironmentRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapEnvironmentRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapEnvironmentRef {
+    class public func sandbox() -> IosIapEnvironment {
+        IosIapEnvironment(ptr: __swift_bridge__$IosIapEnvironment$sandbox())
+    }
+
+    class public func production() -> IosIapEnvironment {
+        IosIapEnvironment(ptr: __swift_bridge__$IosIapEnvironment$production())
+    }
+
+    class public func xcode() -> IosIapEnvironment {
+        IosIapEnvironment(ptr: __swift_bridge__$IosIapEnvironment$xcode())
+    }
+}
+extension IosIapEnvironment: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapEnvironment$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapEnvironment$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapEnvironment) {
+        __swift_bridge__$Vec_IosIapEnvironment$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapEnvironment$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapEnvironment(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapEnvironmentRef> {
+        let pointer = __swift_bridge__$Vec_IosIapEnvironment$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapEnvironmentRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapEnvironmentRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapEnvironment$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapEnvironmentRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapEnvironmentRef> {
+        UnsafePointer<IosIapEnvironmentRef>(OpaquePointer(__swift_bridge__$Vec_IosIapEnvironment$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapEnvironment$len(vecPtr)
+    }
+}
+
+
+public class IosIapTransactionReason: IosIapTransactionReasonRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapTransactionReason$_free(ptr)
+        }
+    }
+}
+public class IosIapTransactionReasonRefMut: IosIapTransactionReasonRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapTransactionReasonRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapTransactionReasonRef {
+    class public func renewal() -> IosIapTransactionReason {
+        IosIapTransactionReason(ptr: __swift_bridge__$IosIapTransactionReason$renewal())
+    }
+
+    class public func purchase() -> IosIapTransactionReason {
+        IosIapTransactionReason(ptr: __swift_bridge__$IosIapTransactionReason$purchase())
+    }
+}
+extension IosIapTransactionReason: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapTransactionReason$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapTransactionReason$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapTransactionReason) {
+        __swift_bridge__$Vec_IosIapTransactionReason$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapTransactionReason$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapTransactionReason(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapTransactionReasonRef> {
+        let pointer = __swift_bridge__$Vec_IosIapTransactionReason$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapTransactionReasonRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapTransactionReasonRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapTransactionReason$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapTransactionReasonRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapTransactionReasonRef> {
+        UnsafePointer<IosIapTransactionReasonRef>(OpaquePointer(__swift_bridge__$Vec_IosIapTransactionReason$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapTransactionReason$len(vecPtr)
+    }
+}
+
+
+public class IosIapTransaction: IosIapTransactionRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapTransaction$_free(ptr)
+        }
+    }
+}
+extension IosIapTransaction {
+    class public func new_transaction<GenericIntoRustString: IntoRustString>(_ id: UInt64, _ product_id: GenericIntoRustString, _ app_bundle_id: GenericIntoRustString, _ purchase_date: UInt64, _ purchased_quantity: Int32, _ storefront_country_code: GenericIntoRustString, _ signed_date: UInt64, _ is_upgraded: Bool, _ product_type: IosIapProductType, _ reason: IosIapTransactionReason, _ environment: IosIapEnvironment, _ storefront: IosIapStorefront) -> IosIapTransaction {
+        IosIapTransaction(ptr: __swift_bridge__$IosIapTransaction$new_transaction(id, { let rustString = product_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), { let rustString = app_bundle_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), purchase_date, purchased_quantity, { let rustString = storefront_country_code.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), signed_date, is_upgraded, {product_type.isOwned = false; return product_type.ptr;}(), {reason.isOwned = false; return reason.ptr;}(), {environment.isOwned = false; return environment.ptr;}(), {storefront.isOwned = false; return storefront.ptr;}()))
+    }
+
+    class public func add_revocation(_ t: IosIapTransactionRefMut, _ date: UInt64) {
+        __swift_bridge__$IosIapTransaction$add_revocation(t.ptr, date)
+    }
+
+    class public func add_expiration(_ t: IosIapTransactionRefMut, _ date: UInt64) {
+        __swift_bridge__$IosIapTransaction$add_expiration(t.ptr, date)
+    }
+}
+public class IosIapTransactionRefMut: IosIapTransactionRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapTransactionRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapTransaction: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapTransaction$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapTransaction$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapTransaction) {
+        __swift_bridge__$Vec_IosIapTransaction$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapTransaction$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapTransaction(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapTransactionRef> {
+        let pointer = __swift_bridge__$Vec_IosIapTransaction$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapTransactionRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapTransactionRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapTransaction$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapTransactionRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapTransactionRef> {
+        UnsafePointer<IosIapTransactionRef>(OpaquePointer(__swift_bridge__$Vec_IosIapTransaction$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapTransaction$len(vecPtr)
+    }
 }
 
 

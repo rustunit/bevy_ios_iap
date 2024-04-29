@@ -60,3 +60,21 @@ public func ios_iap_purchase(id: RustString)
         purchase_processed(result)
    }
 }
+
+public func ios_iap_init()
+{
+    TransactionObserver.init()
+}
+
+public func ios_iap_transaction_finish(id: UInt64) {
+    print("ios_iap_transaction_finish: \(id)");
+    Task {
+        for await t in Transaction.unfinished {
+            if try t.payloadValue.id == id {
+                try await t.payloadValue.finish()
+                
+                print("transaction finished: \(id)");
+            }
+        }
+    }
+}

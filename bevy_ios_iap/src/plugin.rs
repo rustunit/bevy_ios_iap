@@ -1,12 +1,14 @@
 use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 
+use crate::transaction::IosIapTransaction;
 use crate::{IosIapProduct, IosIapPurchaseResult};
 
 #[derive(Event, Clone, Debug)]
 pub enum IosIapEvents {
     Products(Vec<IosIapProduct>),
     Purchase(IosIapPurchaseResult),
+    Transaction(IosIapTransaction),
 }
 
 #[allow(dead_code)]
@@ -15,8 +17,6 @@ pub struct IosIapPlugin;
 
 impl Plugin for IosIapPlugin {
     fn build(&self, app: &mut App) {
-        // app.init_non_send_resource::<IosNotificationsResource>();
-
         #[cfg(not(target_os = "ios"))]
         {
             app.add_event::<IosIapEvents>();
@@ -25,6 +25,8 @@ impl Plugin for IosIapPlugin {
         #[cfg(target_os = "ios")]
         {
             use bevy_crossbeam_event::{CrossbeamEventApp, CrossbeamEventSender};
+
+            crate::native::ios_iap_init();
 
             app.add_crossbeam_event::<IosIapEvents>();
 

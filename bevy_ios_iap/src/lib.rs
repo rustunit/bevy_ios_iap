@@ -1,8 +1,9 @@
 mod methods;
 mod native;
 mod plugin;
+mod transaction;
 
-pub use methods::{get_products, purchase};
+pub use methods::{finish_transaction, get_products, purchase};
 pub use plugin::{IosIapEvents, IosIapPlugin};
 
 #[derive(Debug, Clone)]
@@ -23,6 +24,52 @@ impl IosIapPurchaseResult {
 
     fn pending() -> Self {
         Self::Pending
+    }
+}
+
+#[derive(Debug, Clone)]
+pub enum IosIapTransactionReason {
+    Renewal,
+    Purchase,
+}
+
+impl IosIapTransactionReason {
+    pub fn renewal() -> Self {
+        Self::Renewal
+    }
+    pub fn purchase() -> Self {
+        Self::Purchase
+    }
+}
+
+#[derive(Debug, Clone)]
+pub enum IosIapEnvironment {
+    Production,
+    Sandbox,
+    XCode,
+}
+
+impl IosIapEnvironment {
+    pub fn production() -> Self {
+        Self::Production
+    }
+    pub fn sandbox() -> Self {
+        Self::Sandbox
+    }
+    pub fn xcode() -> Self {
+        Self::XCode
+    }
+}
+
+#[derive(Debug, Clone, Default)]
+pub struct IosIapStorefront {
+    pub id: String,
+    pub country_code: String,
+}
+
+impl IosIapStorefront {
+    fn storefront(id: String, country_code: String) -> Self {
+        Self { id, country_code }
     }
 }
 

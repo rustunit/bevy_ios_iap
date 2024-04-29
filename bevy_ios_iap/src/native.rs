@@ -6,7 +6,11 @@ use bevy_crossbeam_event::CrossbeamEventSender;
 pub use ffi::*;
 
 use crate::plugin::IosIapEvents;
-use crate::{IosIapProduct, IosIapProductType, IosIapPurchaseResult};
+use crate::transaction::IosIapTransaction;
+use crate::{
+    IosIapEnvironment, IosIapProduct, IosIapProductType, IosIapPurchaseResult, IosIapStorefront,
+    IosIapTransactionReason,
+};
 
 #[swift_bridge::bridge]
 mod ffi {
@@ -15,6 +19,10 @@ mod ffi {
         type IosIapProduct;
         type IosIapProductType;
         type IosIapPurchaseResult;
+        type IosIapTransaction;
+        type IosIapTransactionReason;
+        type IosIapEnvironment;
+        type IosIapStorefront;
 
         #[swift_bridge(associated_to = IosIapProduct)]
         fn new(
@@ -40,14 +48,51 @@ mod ffi {
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
         fn pending() -> IosIapPurchaseResult;
 
+        #[swift_bridge(associated_to = IosIapEnvironment)]
+        fn sandbox() -> IosIapEnvironment;
+        #[swift_bridge(associated_to = IosIapEnvironment)]
+        fn production() -> IosIapEnvironment;
+        #[swift_bridge(associated_to = IosIapEnvironment)]
+        fn xcode() -> IosIapEnvironment;
+
+        #[swift_bridge(associated_to = IosIapStorefront)]
+        fn storefront(id: String, country_code: String) -> IosIapStorefront;
+
+        #[swift_bridge(associated_to = IosIapTransaction)]
+        fn new_transaction(
+            id: u64,
+            product_id: String,
+            app_bundle_id: String,
+            purchase_date: u64,
+            purchased_quantity: i32,
+            storefront_country_code: String,
+            signed_date: u64,
+            is_upgraded: bool,
+            product_type: IosIapProductType,
+            reason: IosIapTransactionReason,
+            environment: IosIapEnvironment,
+            storefront: IosIapStorefront,
+        ) -> IosIapTransaction;
+        #[swift_bridge(associated_to = IosIapTransaction)]
+        fn add_revocation(t: &mut IosIapTransaction, date: u64);
+        #[swift_bridge(associated_to = IosIapTransaction)]
+        fn add_expiration(t: &mut IosIapTransaction, date: u64);
+
+        #[swift_bridge(associated_to = IosIapTransactionReason)]
+        fn renewal() -> IosIapTransactionReason;
+        #[swift_bridge(associated_to = IosIapTransactionReason)]
+        fn purchase() -> IosIapTransactionReason;
+
         fn products_received(products: Vec<IosIapProduct>);
         fn purchase_processed(result: IosIapPurchaseResult);
+        fn transaction_update(t: IosIapTransaction);
     }
 
     extern "Swift" {
-
+        pub fn ios_iap_init();
         pub fn ios_iap_products(products: Vec<String>);
         pub fn ios_iap_purchase(id: String);
+        pub fn ios_iap_transaction_finish(id: u64);
     }
 }
 
@@ -56,6 +101,15 @@ static SENDER: OnceLock<Option<CrossbeamEventSender<IosIapEvents>>> = OnceLock::
 #[allow(dead_code)]
 pub fn set_sender(sender: CrossbeamEventSender<IosIapEvents>) {
     while !SENDER.set(Some(sender.clone())).is_ok() {}
+}
+
+fn transaction_update(t: IosIapTransaction) {
+    SENDER
+        .get()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .send(IosIapEvents::Transaction(t));
 }
 
 fn products_received(products: Vec<IosIapProduct>) {
