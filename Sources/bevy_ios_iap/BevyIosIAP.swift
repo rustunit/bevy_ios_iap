@@ -81,9 +81,12 @@ public func ios_iap_transactions_all() {
         var transactions = RustVec<IosIapTransaction>.init()
         
         for await t in Transaction.all {
-            let payload = t.unsafePayloadValue
+            //only return signed/verified transactions
+            guard case .verified(let transaction) = t else {
+                continue
+            }
             
-            transactions.push(value:convert_transaction(payload))
+            transactions.push(value:convert_transaction(transaction))
         }
         
         all_transactions(transactions)
