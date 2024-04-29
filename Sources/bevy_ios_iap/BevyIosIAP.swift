@@ -69,8 +69,13 @@ public func ios_iap_init()
 public func ios_iap_transaction_finish(id: UInt64) {
     Task {
         for await t in Transaction.unfinished {
-            if t.unsafePayloadValue.id == id {
-                await t.unsafePayloadValue.finish()
+            // ignore un-signed/verified transactions
+            guard case .verified(let transaction) = t else {
+                continue
+            }
+            
+            if transaction.id == id {
+                await transaction.finish()
             }
         }
     }
