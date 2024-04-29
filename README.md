@@ -3,9 +3,11 @@
 Provides access to iOS native StoreKit2 Swift API from inside Bevy Apps.
 It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-generate the glue code and transport datatypes.
 
+![demo](./demo.gif)
+
 See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notifications), [bevy_ios_alerts](https://github.com/rustunit/bevy_ios_alerts) & [bevy_ios_impact](https://github.com/rustunit/bevy_ios_impact)
 
-**note**: this currently does not ship precompiled binaries so it will only work if you clone and integrate as a local Swift package and build the binaries for the `RustXcframework.xcframework`
+**note**: this currently does not ship precompiled binaries so it will only work if you clone and integrate as a local Swift package and build the binaries for the `RustXcframework.xcframework`, please use `make build` for an automated process for this
 
 ## Features
 * fetch detailed products
@@ -28,3 +30,4 @@ See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notificat
 * support derives(Clone,Debug) on shared enums
 * support calling async swift from rust
 * allow shared structs in `Vec`'s (Vectorizable)
+* properly add missing `import RustXcframework` when using Swift Package approach
