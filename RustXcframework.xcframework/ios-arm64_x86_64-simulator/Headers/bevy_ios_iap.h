@@ -102,6 +102,7 @@ void __swift_bridge__$IosIapTransaction$add_expiration(void* t, uint64_t date);
 void* __swift_bridge__$IosIapTransactionReason$renewal(void);
 void* __swift_bridge__$IosIapTransactionReason$purchase(void);
 void __swift_bridge__$products_received(void* products);
+void __swift_bridge__$all_transactions(void* transactions);
 void __swift_bridge__$purchase_processed(void* result);
 void __swift_bridge__$transaction_update(void* t);
 

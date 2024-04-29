@@ -17,3 +17,8 @@ pub fn finish_transaction(id: u64) {
     #[cfg(target_os = "ios")]
     native::ios_iap_transaction_finish(id);
 }
+
+pub fn all_transactions() {
+    #[cfg(target_os = "ios")]
+    native::ios_iap_transactions_all();
+}

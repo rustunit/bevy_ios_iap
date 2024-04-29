@@ -84,6 +84,7 @@ mod ffi {
         fn purchase() -> IosIapTransactionReason;
 
         fn products_received(products: Vec<IosIapProduct>);
+        fn all_transactions(transactions: Vec<IosIapTransaction>);
         fn purchase_processed(result: IosIapPurchaseResult);
         fn transaction_update(t: IosIapTransaction);
     }
@@ -92,6 +93,7 @@ mod ffi {
         pub fn ios_iap_init();
         pub fn ios_iap_products(products: Vec<String>);
         pub fn ios_iap_purchase(id: String);
+        pub fn ios_iap_transactions_all();
         pub fn ios_iap_transaction_finish(id: u64);
     }
 }
@@ -110,6 +112,15 @@ fn transaction_update(t: IosIapTransaction) {
         .as_ref()
         .unwrap()
         .send(IosIapEvents::Transaction(t));
+}
+
+fn all_transactions(transactions: Vec<IosIapTransaction>) {
+    SENDER
+        .get()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .send(IosIapEvents::AllTransactions(transactions));
 }
 
 fn products_received(products: Vec<IosIapProduct>) {

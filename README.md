@@ -6,12 +6,11 @@
 * fetch detailed products
 * purchase
 * listen to changes on previous transactions
+* fetch list of all transactions (to restore old purchases)
 
 ## TODOs
-* build async API (not supported by swift-bridge yet)
-* support subscriptions
-* support restoring purchases of non-consumables
 * catch exceptions in swift functions and report errors to rust
+* allow access to signature for remote verification
 
 ## Swift-Bridge wishlist
 * support derives(Clone,Debug) on shared enums

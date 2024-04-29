@@ -1,6 +1,9 @@
 public func products_received(_ products: RustVec<IosIapProduct>) {
     __swift_bridge__$products_received({ let val = products; val.isOwned = false; return val.ptr }())
 }
+public func all_transactions(_ transactions: RustVec<IosIapTransaction>) {
+    __swift_bridge__$all_transactions({ let val = transactions; val.isOwned = false; return val.ptr }())
+}
 public func purchase_processed(_ result: IosIapPurchaseResult) {
     __swift_bridge__$purchase_processed({result.isOwned = false; return result.ptr;}())
 }
@@ -20,6 +23,11 @@ func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
 @_cdecl("__swift_bridge__$ios_iap_purchase")
 func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
     ios_iap_purchase(id: RustString(ptr: id))
+}
+
+@_cdecl("__swift_bridge__$ios_iap_transactions_all")
+func __swift_bridge__ios_iap_transactions_all () {
+    ios_iap_transactions_all()
 }
 
 @_cdecl("__swift_bridge__$ios_iap_transaction_finish")

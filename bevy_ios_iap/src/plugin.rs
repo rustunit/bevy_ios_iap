@@ -9,6 +9,7 @@ pub enum IosIapEvents {
     Products(Vec<IosIapProduct>),
     Purchase(IosIapPurchaseResult),
     Transaction(IosIapTransaction),
+    AllTransactions(Vec<IosIapTransaction>),
 }
 
 #[allow(dead_code)]
