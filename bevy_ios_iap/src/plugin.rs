@@ -4,17 +4,29 @@ use bevy_ecs::prelude::*;
 use crate::transaction::IosIapTransaction;
 use crate::{IosIapProduct, IosIapPurchaseResult};
 
+///
 #[derive(Event, Clone, Debug)]
 pub enum IosIapEvents {
     Products(Vec<IosIapProduct>),
     Purchase(IosIapPurchaseResult),
     Transaction(IosIapTransaction),
+
+    /// async response to `all_transaction` request
     AllTransactions(Vec<IosIapTransaction>),
 }
 
+///
 #[allow(dead_code)]
-#[derive(Default)]
-pub struct IosIapPlugin;
+pub struct IosIapPlugin {
+    auto_init: bool,
+}
+
+impl IosIapPlugin {
+    ///
+    pub fn new(auto_init: bool) -> Self {
+        Self { auto_init }
+    }
+}
 
 impl Plugin for IosIapPlugin {
     fn build(&self, app: &mut App) {
@@ -27,8 +39,6 @@ impl Plugin for IosIapPlugin {
         {
             use bevy_crossbeam_event::{CrossbeamEventApp, CrossbeamEventSender};
 
-            crate::native::ios_iap_init();
-
             app.add_crossbeam_event::<IosIapEvents>();
 
             let sender = app
@@ -38,6 +48,10 @@ impl Plugin for IosIapPlugin {
                 .clone();
 
             crate::native::set_sender(sender);
+
+            if self.auto_init {
+                crate::native::ios_iap_init();
+            }
         }
     }
 }

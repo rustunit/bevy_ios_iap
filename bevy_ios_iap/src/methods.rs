@@ -3,6 +3,11 @@
 #[allow(unused_imports)]
 use crate::native;
 
+pub fn init() {
+    #[cfg(target_os = "ios")]
+    native::ios_iap_init();
+}
+
 pub fn get_products(products: Vec<String>) {
     #[cfg(target_os = "ios")]
     native::ios_iap_products(products);

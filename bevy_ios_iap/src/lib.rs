@@ -3,7 +3,7 @@ mod native;
 mod plugin;
 mod transaction;
 
-pub use methods::{all_transactions, finish_transaction, get_products, purchase};
+pub use methods::{all_transactions, finish_transaction, get_products, init, purchase};
 pub use plugin::{IosIapEvents, IosIapPlugin};
 pub use transaction::IosIapTransaction;
 
