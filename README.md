@@ -8,6 +8,9 @@
 * listen to changes on previous transactions
 * fetch list of all transactions (to restore old purchases)
 
+## Notes
+* does not return locally un-signed/un-verified transactions
+
 ## TODOs
 * support subscription product type
 * catch exceptions in swift functions and report errors to rust
