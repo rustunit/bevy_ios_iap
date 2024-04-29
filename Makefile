@@ -20,9 +20,7 @@ copy-generated:
 build: build-rust copy-generated
 	cp ./bevy_ios_iap/target/universal-ios/debug/libbevy_ios_iap.a ./RustXcframework.xcframework/ios-arm64_x86_64-simulator/
 	cp ./bevy_ios_iap/target/aarch64-apple-ios/debug/libbevy_ios_iap.a ./RustXcframework.xcframework/ios-arm64/
-	rm -rf ./bevy_ios_iap/generated
 
 build-release: build-rust-release copy-generated
 	cp ./bevy_ios_iap/target/universal-ios/release/libbevy_ios_iap.a ./RustXcframework.xcframework/ios-arm64_x86_64-simulator/
 	cp ./bevy_ios_iap/target/aarch64-apple-ios/release/libbevy_ios_iap.a ./RustXcframework.xcframework/ios-arm64/
-	rm -rf ./bevy_ios_iap/generated

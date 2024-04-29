@@ -31,3 +31,4 @@ See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notificat
 * support calling async swift from rust
 * allow shared structs in `Vec`'s (Vectorizable)
 * properly add missing `import RustXcframework` when using Swift Package approach
+* add `swift_bridge_build.update_package` to only copy the files over instead of generating everything (and do the above)
