@@ -1,3 +1,4 @@
+import RustXcframework 
 public func products_received(_ products: RustVec<IosIapProduct>) {
     __swift_bridge__$products_received({ let val = products; val.isOwned = false; return val.ptr }())
 }
@@ -11,27 +12,27 @@ public func transaction_update(_ t: IosIapTransaction) {
     __swift_bridge__$transaction_update({t.isOwned = false; return t.ptr;}())
 }
 @_cdecl("__swift_bridge__$ios_iap_init")
-func __swift_bridge__ios_iap_init () {
+public func __swift_bridge__ios_iap_init () {
     ios_iap_init()
 }
 
 @_cdecl("__swift_bridge__$ios_iap_products")
-func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
+public func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
     ios_iap_products(products: RustVec(ptr: products))
 }
 
 @_cdecl("__swift_bridge__$ios_iap_purchase")
-func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
+public func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
     ios_iap_purchase(id: RustString(ptr: id))
 }
 
 @_cdecl("__swift_bridge__$ios_iap_transactions_all")
-func __swift_bridge__ios_iap_transactions_all () {
+public func __swift_bridge__ios_iap_transactions_all () {
     ios_iap_transactions_all()
 }
 
 @_cdecl("__swift_bridge__$ios_iap_transaction_finish")
-func __swift_bridge__ios_iap_transaction_finish (_ id: UInt64) {
+public func __swift_bridge__ios_iap_transaction_finish (_ id: UInt64) {
     ios_iap_transaction_finish(id: id)
 }
 

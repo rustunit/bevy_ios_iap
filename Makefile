@@ -8,6 +8,7 @@ build-rust:
 	./bevy_ios_iap/build-rust.sh
 
 copy-generated:
+	gsed -i 's/func _/public func _/g' bevy_ios_iap/generated/bevy_ios_iap/bevy_ios_iap.swift
 	echo "import RustXcframework "|cat - ./bevy_ios_iap/generated/SwiftBridgeCore.swift > /tmp/out && mv /tmp/out ./bevy_ios_iap/generated/SwiftBridgeCore.swift
 	echo "import RustXcframework "|cat - ./bevy_ios_iap/generated/bevy_ios_iap/bevy_ios_iap.swift > /tmp/out && mv /tmp/out ./bevy_ios_iap/generated/bevy_ios_iap/bevy_ios_iap.swift
 	cp ./bevy_ios_iap/generated/bevy_ios_iap/bevy_ios_iap.h ./RustXcframework.xcframework/ios-arm64/Headers/
