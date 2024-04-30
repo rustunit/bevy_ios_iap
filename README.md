@@ -27,6 +27,7 @@ See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notificat
 * transaction revocation reason
 
 ## Swift-Bridge wishlist
+* make @_cdecl funcs `public`
 * support derives(Clone,Debug) on shared enums
 * support calling async swift from rust
 * allow shared structs in `Vec`'s (Vectorizable)
