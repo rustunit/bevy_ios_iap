@@ -13,7 +13,7 @@ See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notificat
 * fetch detailed products
 * purchase
 * listen to changes in previous transactions
-* fetch list of all transactions (to restore old purchases)
+* fetch list of all transactions (to restore old purchases of non-consumables)
 
 ## Notes
 * does not return locally un-signed/un-verified transactions
