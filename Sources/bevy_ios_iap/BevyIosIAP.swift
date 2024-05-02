@@ -43,21 +43,26 @@ public func ios_iap_products(products:RustVec<RustString>)
 public func ios_iap_purchase(id: RustString)
 {
     Task {
-        let productIds = [id.toString()]
-        let products = try await Product.products(for: productIds)
-        let purchase  = try! await products[0].purchase()
-//        print("purchase:\n \(purchase)")
-        
-        let result = switch purchase {
-        case .success(_):
-            IosIapPurchaseResult.success()
-        case .userCancelled:
-            IosIapPurchaseResult.canceled()
-        case .pending:
-            IosIapPurchaseResult.pending()
+        do {
+            let productIds = [id.toString()]
+            let products = try await Product.products(for: productIds)
+            let purchase  = try await products[0].purchase()
+            
+            let result = switch purchase {
+            case .success(_):
+                //TODO: forward t.id
+                IosIapPurchaseResult.success()
+            case .userCancelled:
+                IosIapPurchaseResult.canceled()
+            case .pending:
+                IosIapPurchaseResult.pending()
+            }
+            
+            purchase_processed(result)
+        } catch {
+            print("ios_iap_purchase error: \(error).")
+            purchase_processed(IosIapPurchaseResult.error(error.localizedDescription))
         }
-        
-        purchase_processed(result)
    }
 }
 
@@ -68,15 +73,24 @@ public func ios_iap_init()
 
 public func ios_iap_transaction_finish(id: UInt64) {
     Task {
-        for await t in Transaction.unfinished {
-            // ignore un-signed/verified transactions
-            guard case .verified(let transaction) = t else {
-                continue
+        do {
+            for await t in Transaction.unfinished {
+                // ignore un-signed/verified transactions
+                guard case .verified(let transaction) = t else {
+                    continue
+                }
+                
+                if transaction.id == id {
+                    await transaction.finish()
+                    transaction_finished(IosIapTransactionFinished.finished(convert_transaction(transaction)))
+                    return;
+                }
             }
             
-            if transaction.id == id {
-                await transaction.finish()
-            }
+            transaction_finished(IosIapTransactionFinished.unknown(id))
+        }catch {
+            print("ios_iap_transaction_finish error: \(error).")
+            transaction_finished(IosIapTransactionFinished.error(error.localizedDescription))
         }
     }
 }

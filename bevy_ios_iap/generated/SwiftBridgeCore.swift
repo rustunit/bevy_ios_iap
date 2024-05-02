@@ -1,4 +1,3 @@
-import RustXcframework 
 import Foundation
 
 extension RustString {

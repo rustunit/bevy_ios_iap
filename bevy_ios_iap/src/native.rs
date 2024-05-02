@@ -9,7 +9,7 @@ use crate::plugin::IosIapEvents;
 use crate::transaction::IosIapTransaction;
 use crate::{
     IosIapEnvironment, IosIapProduct, IosIapProductType, IosIapPurchaseResult, IosIapStorefront,
-    IosIapTransactionReason,
+    IosIapTransactionFinished, IosIapTransactionReason,
 };
 
 #[swift_bridge::bridge]
@@ -47,6 +47,8 @@ mod ffi {
         fn canceled() -> IosIapPurchaseResult;
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
         fn pending() -> IosIapPurchaseResult;
+        #[swift_bridge(associated_to = IosIapPurchaseResult)]
+        fn error(e: String) -> IosIapPurchaseResult;
 
         #[swift_bridge(associated_to = IosIapEnvironment)]
         fn sandbox() -> IosIapEnvironment;
@@ -83,10 +85,19 @@ mod ffi {
         #[swift_bridge(associated_to = IosIapTransactionReason)]
         fn purchase() -> IosIapTransactionReason;
 
+        type IosIapTransactionFinished;
+        #[swift_bridge(associated_to = IosIapTransactionFinished)]
+        fn finished(t: IosIapTransaction) -> IosIapTransactionFinished;
+        #[swift_bridge(associated_to = IosIapTransactionFinished)]
+        fn error(e: String) -> IosIapTransactionFinished;
+        #[swift_bridge(associated_to = IosIapTransactionFinished)]
+        fn unknown(id: u64) -> IosIapTransactionFinished;
+
         fn products_received(products: Vec<IosIapProduct>);
         fn all_transactions(transactions: Vec<IosIapTransaction>);
         fn purchase_processed(result: IosIapPurchaseResult);
         fn transaction_update(t: IosIapTransaction);
+        fn transaction_finished(t: IosIapTransactionFinished);
     }
 
     extern "Swift" {
@@ -121,6 +132,15 @@ fn all_transactions(transactions: Vec<IosIapTransaction>) {
         .as_ref()
         .unwrap()
         .send(IosIapEvents::AllTransactions(transactions));
+}
+
+fn transaction_finished(t: IosIapTransactionFinished) {
+    SENDER
+        .get()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .send(IosIapEvents::TransactionFinished(t));
 }
 
 fn products_received(products: Vec<IosIapProduct>) {

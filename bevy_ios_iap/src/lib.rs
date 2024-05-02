@@ -8,10 +8,31 @@ pub use plugin::{IosIapEvents, IosIapPlugin};
 pub use transaction::IosIapTransaction;
 
 #[derive(Debug, Clone)]
+pub enum IosIapTransactionFinished {
+    UnknownTransaction(u64),
+    Finished(IosIapTransaction),
+    Error(String),
+}
+
+impl IosIapTransactionFinished {
+    fn unknown(id: u64) -> Self {
+        Self::UnknownTransaction(id)
+    }
+
+    fn finished(t: IosIapTransaction) -> Self {
+        Self::Finished(t)
+    }
+    fn error(e: String) -> Self {
+        Self::Error(e)
+    }
+}
+
+#[derive(Debug, Clone)]
 pub enum IosIapPurchaseResult {
     Success,
     Canceled,
     Pending,
+    Error(String),
 }
 
 impl IosIapPurchaseResult {
@@ -25,6 +46,10 @@ impl IosIapPurchaseResult {
 
     fn pending() -> Self {
         Self::Pending
+    }
+
+    fn error(e: String) -> Self {
+        Self::Error(e)
     }
 }
 

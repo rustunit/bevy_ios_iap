@@ -1,4 +1,3 @@
-import RustXcframework 
 public func products_received(_ products: RustVec<IosIapProduct>) {
     __swift_bridge__$products_received({ let val = products; val.isOwned = false; return val.ptr }())
 }
@@ -11,29 +10,120 @@ public func purchase_processed(_ result: IosIapPurchaseResult) {
 public func transaction_update(_ t: IosIapTransaction) {
     __swift_bridge__$transaction_update({t.isOwned = false; return t.ptr;}())
 }
+public func transaction_finished(_ t: IosIapTransactionFinished) {
+    __swift_bridge__$transaction_finished({t.isOwned = false; return t.ptr;}())
+}
 @_cdecl("__swift_bridge__$ios_iap_init")
-public func __swift_bridge__ios_iap_init () {
+func __swift_bridge__ios_iap_init () {
     ios_iap_init()
 }
 
 @_cdecl("__swift_bridge__$ios_iap_products")
-public func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
+func __swift_bridge__ios_iap_products (_ products: UnsafeMutableRawPointer) {
     ios_iap_products(products: RustVec(ptr: products))
 }
 
 @_cdecl("__swift_bridge__$ios_iap_purchase")
-public func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
+func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
     ios_iap_purchase(id: RustString(ptr: id))
 }
 
 @_cdecl("__swift_bridge__$ios_iap_transactions_all")
-public func __swift_bridge__ios_iap_transactions_all () {
+func __swift_bridge__ios_iap_transactions_all () {
     ios_iap_transactions_all()
 }
 
 @_cdecl("__swift_bridge__$ios_iap_transaction_finish")
-public func __swift_bridge__ios_iap_transaction_finish (_ id: UInt64) {
+func __swift_bridge__ios_iap_transaction_finish (_ id: UInt64) {
     ios_iap_transaction_finish(id: id)
+}
+
+
+public class IosIapTransactionFinished: IosIapTransactionFinishedRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapTransactionFinished$_free(ptr)
+        }
+    }
+}
+extension IosIapTransactionFinished {
+    class public func finished(_ t: IosIapTransaction) -> IosIapTransactionFinished {
+        IosIapTransactionFinished(ptr: __swift_bridge__$IosIapTransactionFinished$finished({t.isOwned = false; return t.ptr;}()))
+    }
+
+    class public func error<GenericIntoRustString: IntoRustString>(_ e: GenericIntoRustString) -> IosIapTransactionFinished {
+        IosIapTransactionFinished(ptr: __swift_bridge__$IosIapTransactionFinished$error({ let rustString = e.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
+    class public func unknown(_ id: UInt64) -> IosIapTransactionFinished {
+        IosIapTransactionFinished(ptr: __swift_bridge__$IosIapTransactionFinished$unknown(id))
+    }
+}
+public class IosIapTransactionFinishedRefMut: IosIapTransactionFinishedRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapTransactionFinishedRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapTransactionFinished: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapTransactionFinished$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapTransactionFinished$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapTransactionFinished) {
+        __swift_bridge__$Vec_IosIapTransactionFinished$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapTransactionFinished$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapTransactionFinished(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapTransactionFinishedRef> {
+        let pointer = __swift_bridge__$Vec_IosIapTransactionFinished$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapTransactionFinishedRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapTransactionFinishedRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapTransactionFinished$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapTransactionFinishedRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapTransactionFinishedRef> {
+        UnsafePointer<IosIapTransactionFinishedRef>(OpaquePointer(__swift_bridge__$Vec_IosIapTransactionFinished$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapTransactionFinished$len(vecPtr)
+    }
 }
 
 
@@ -388,6 +478,11 @@ public class IosIapPurchaseResult: IosIapPurchaseResultRefMut {
         if isOwned {
             __swift_bridge__$IosIapPurchaseResult$_free(ptr)
         }
+    }
+}
+extension IosIapPurchaseResult {
+    class public func error<GenericIntoRustString: IntoRustString>(_ e: GenericIntoRustString) -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$error({ let rustString = e.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
     }
 }
 public class IosIapPurchaseResultRefMut: IosIapPurchaseResultRef {

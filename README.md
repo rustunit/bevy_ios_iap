@@ -19,8 +19,9 @@ See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notificat
 * does not return locally un-signed/un-verified transactions
 
 ## Todo
+* forward transaction.id inside of successful purchase result to allow early finish
 * support subscription product type
-* catch exceptions in swift functions and report errors to rust
+* remaining error handling in: `ios_iap_transactions_all` and `ios_iap_products`
 * allow access to signature for remote verification
 * support offers
 * support family sharing

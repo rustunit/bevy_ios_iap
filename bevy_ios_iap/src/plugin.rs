@@ -2,7 +2,7 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 
 use crate::transaction::IosIapTransaction;
-use crate::{IosIapProduct, IosIapPurchaseResult};
+use crate::{IosIapProduct, IosIapPurchaseResult, IosIapTransactionFinished};
 
 ///
 #[derive(Event, Clone, Debug)]
@@ -10,6 +10,7 @@ pub enum IosIapEvents {
     Products(Vec<IosIapProduct>),
     Purchase(IosIapPurchaseResult),
     Transaction(IosIapTransaction),
+    TransactionFinished(IosIapTransactionFinished),
 
     /// async response to `all_transaction` request
     AllTransactions(Vec<IosIapTransaction>),
