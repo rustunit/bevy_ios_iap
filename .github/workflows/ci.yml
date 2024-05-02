@@ -37,3 +37,4 @@ jobs:
         prerelease: ${{ contains(github.ref, '-') }}
         files: |
           ./RustXcframework.xcframework.zip
+          ./RustXcframework.xcframework.sha256.txt
