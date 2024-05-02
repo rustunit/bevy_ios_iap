@@ -21,7 +21,14 @@ jobs:
     - name: make xcframework archive
       run: make zip
 
-    - uses: actions/upload-artifact@v4
+    # - uses: actions/upload-artifact@v4
+    #   with:
+    #     name: RustXcframework.xcframework.zip
+    #     path: ./RustXcframework.xcframework.zip
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
       with:
-        name: RustXcframework.xcframework.zip
-        path: ./RustXcframework.xcframework.zip
+        # prerelease: ${{ contains(github.ref, '-') }}
+        files: |
+          ./RustXcframework.xcframework.zip
