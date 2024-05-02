@@ -18,9 +18,6 @@ jobs:
     - name: Add iOS targets
       run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
-    - name: test sed
-      run: sed --version
-
     - name: make xcframework archive
       run: make zip
 
