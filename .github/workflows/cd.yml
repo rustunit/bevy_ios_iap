@@ -1,16 +1,17 @@
-name: CI
+name: CD-rust
 
 on:
   push:
-    branches: [ '*' ]
     tags:
-     - '*'
+     - 'rs-*'
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: macos-latest
 
     steps:
@@ -28,15 +29,11 @@ jobs:
     - name: make xcframework archive
       run: make zip
 
-    # - uses: actions/upload-artifact@v4
-    #   with:
-    #     name: RustXcframework.xcframework.zip
-    #     path: ./RustXcframework.xcframework.zip
-
     - name: Release
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
-        # prerelease: ${{ contains(github.ref, '-') }}
+        prerelease: ${{ contains(github.ref, 'rc') }}
         files: |
           ./RustXcframework.xcframework.zip
+          ./RustXcframework.xcframework.sha256.txt
