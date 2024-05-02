@@ -23,7 +23,7 @@ jobs:
     - name: Rust Cache
       uses: Swatinem/rust-cache@v2
       with:
-        workspaces: "bevy_ios_iap/Cargo.toml"
+        workspaces: "./bevy_ios_iap/Cargo.toml"
 
     - name: make xcframework archive
       run: make zip
