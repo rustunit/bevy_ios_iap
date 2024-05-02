@@ -31,3 +31,5 @@ build-release: build-rust-release copy-generated
 zip: build-release
 	zip -r RustXcframework.xcframework.zip ./RustXcframework.xcframework/
 	ls -lisah RustXcframework.xcframework.zip
+	shasum -a 256 RustXcframework.xcframework.zip
+	shasum -a 256 RustXcframework.xcframework.zip > RustXcframework.xcframework.sha256.txt
