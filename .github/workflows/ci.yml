@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [ '*' ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dtolnay/rust-toolchain@stable
+
+    - name: Add iOS targets
+      run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
+
+    - name: Build
+      run: make build-rust
+
+    - name: Archive
+      run: make zip
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: XCFramework Archive
+        path: ./RustXcframework.xcframework.zip
