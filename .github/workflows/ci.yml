@@ -18,7 +18,7 @@ jobs:
     - name: Add iOS targets
       run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
-    - name: Build
+    - name: make xcframework archive
       run: make zip
 
     - uses: actions/upload-artifact@v4
