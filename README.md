@@ -1,13 +1,13 @@
 # bevy_ios_iap
 
+[![crates.io](https://img.shields.io/crates/v/bevy_ios_iap.svg)](https://crates.io/crates/bevy_ios_iap)
+
 Provides access to iOS native StoreKit2 Swift API from inside Bevy Apps.
 It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-generate the glue code and transport datatypes.
 
 ![demo](./demo.gif)
 
 See also [bevy_ios_notifications](https://github.com/rustunit/bevy_ios_notifications), [bevy_ios_alerts](https://github.com/rustunit/bevy_ios_alerts) & [bevy_ios_impact](https://github.com/rustunit/bevy_ios_impact)
-
-**note**: this currently does not ship precompiled binaries so it will only work if you clone and integrate as a local Swift package and build the binaries for the `RustXcframework.xcframework`, please use `make build` for an automated process for this
 
 ## Features
 * fetch detailed products
