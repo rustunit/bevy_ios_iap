@@ -3,6 +3,14 @@ name = "bevy_ios_iap"
 version = "0.1.0"
 edition = "2021"
 build = "build.rs"
+readme = "../../readme.md"
+license = "MIT"
+authors = ["extrawurst <mail@rusticorn.com>"]
+documentation = "https://docs.rs/bevy_ios_iap"
+repository = "https://github.com/rustunit/bevy_ios_iap"
+keywords = ["bevy", "gamedev", "mobile", "ios", "swift"]
+description = "Bevy Plugin and Swift Package to provide access to iOS native StoreKit2 from inside Bevy Apps"
+
 
 [lib]
 crate-type = ["staticlib", "rlib"]
@@ -12,8 +20,6 @@ bevy_app = { version = "0.13", default-features = false }
 bevy_ecs = { version = "0.13", default-features = false }
 bevy_ecs_macros = { version = "0.13", default-features = false }
 bevy_log = { version = "0.13", default-features = false }
-
-# [target.'cfg(target_os = "ios")'.dependencies]
 bevy_crossbeam_event = "0.5"
 swift-bridge = "0.1"
 
