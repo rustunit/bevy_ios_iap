@@ -19,12 +19,9 @@ jobs:
       run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
     - name: Build
-      run: make build-rust
-
-    - name: Archive
       run: make zip
 
     - uses: actions/upload-artifact@v4
       with:
-        name: XCFramework Archive
+        name: RustXcframework.xcframework.zip
         path: ./RustXcframework.xcframework.zip

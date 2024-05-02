@@ -25,7 +25,9 @@ build: build-rust copy-generated
 build-release: build-rust-release copy-generated
 	cp ./bevy_ios_iap/target/universal-ios/release/libbevy_ios_iap.a ./RustXcframework.xcframework/ios-arm64_x86_64-simulator/
 	cp ./bevy_ios_iap/target/aarch64-apple-ios/release/libbevy_ios_iap.a ./RustXcframework.xcframework/ios-arm64/
+	ls -lisah ./RustXcframework.xcframework/ios-arm64/
+	ls -lisah ./RustXcframework.xcframework/ios-arm64_x86_64-simulator
 
-zip:
+zip: build-release
 	zip -r RustXcframework.xcframework.zip ./RustXcframework.xcframework/
 	ls -lisah RustXcframework.xcframework.zip
