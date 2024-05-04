@@ -126,7 +126,7 @@ public func convert_transaction(_ transaction: (Transaction)) -> IosIapTransacti
    let reason = if transaction.reason == Transaction.Reason.purchase {
        IosIapTransactionReason.purchase()
    } else  {
-       IosIapTransactionReason.purchase()
+       IosIapTransactionReason.renewal()
    }
    
    let env = if transaction.environment == AppStore.Environment.xcode {
