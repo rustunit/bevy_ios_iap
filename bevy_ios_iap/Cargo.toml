@@ -11,7 +11,6 @@ repository = "https://github.com/rustunit/bevy_ios_iap"
 keywords = ["bevy", "gamedev", "mobile", "ios", "swift"]
 description = "Bevy Plugin and Swift Package to provide access to iOS native StoreKit2 from inside Bevy Apps"
 
-
 [lib]
 crate-type = ["staticlib", "rlib"]
 
