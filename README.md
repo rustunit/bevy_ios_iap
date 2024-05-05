@@ -1,6 +1,7 @@
 # bevy_ios_iap
 
 [![crates.io](https://img.shields.io/crates/v/bevy_ios_iap.svg)](https://crates.io/crates/bevy_ios_iap)
+[![docs.rs](https://img.shields.io/docsrs/bevy_ios_iap)](https://docs.rs/bevy_ios_gamecenter/latest/bevy_ios_iap/)
 
 Provides access to iOS native StoreKit2 Swift API from inside Bevy Apps.
 It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-generate the glue code and transport datatypes.
