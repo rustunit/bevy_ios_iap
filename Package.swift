@@ -16,7 +16,7 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(
-           name: "RustXcframework",
+            name: "RustXcframework",
             url: "https://github.com/rustunit/bevy_ios_iap/releases/download/rs-0.1.0/RustXcframework.xcframework.zip",
             checksum: "0772432798d2800aba31e5bc52a8ad248598efcfbf5d78a2dba11b0bee7c7f60"),
         .target(
