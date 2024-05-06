@@ -46,6 +46,12 @@ public func ios_iap_purchase(id: RustString)
         do {
             let productIds = [id.toString()]
             let products = try await Product.products(for: productIds)
+            
+            if products.count < 1 {
+                purchase_processed(IosIapPurchaseResult.error("Could not find product: {}" + id.toString()))
+                return;
+            }
+            
             let purchase  = try await products[0].purchase()
             
             let result = switch purchase {
