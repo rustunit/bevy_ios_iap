@@ -104,6 +104,7 @@ void* __swift_bridge__$IosIapProductType$new_auto_renewable(void);
 void* __swift_bridge__$IosIapPurchaseResult$success(void);
 void* __swift_bridge__$IosIapPurchaseResult$canceled(void);
 void* __swift_bridge__$IosIapPurchaseResult$pending(void);
+void* __swift_bridge__$IosIapPurchaseResult$unknown(void* id);
 void* __swift_bridge__$IosIapPurchaseResult$error(void* e);
 void* __swift_bridge__$IosIapEnvironment$sandbox(void);
 void* __swift_bridge__$IosIapEnvironment$production(void);

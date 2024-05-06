@@ -17,6 +17,8 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(
             name: "RustXcframework",
+            // for local development:
+            // path: "RustXcframework.xcframework"),
             url: "https://github.com/rustunit/bevy_ios_iap/releases/download/rs-0.1.1/RustXcframework.xcframework.zip",
             checksum: "02ce1e897058362cf4c12db55f557c6708dd8b8dc8e4bd34fd7e895e4b3fbf26"),
         .target(

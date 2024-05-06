@@ -48,6 +48,8 @@ mod ffi {
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
         fn pending() -> IosIapPurchaseResult;
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
+        fn unknown(id: String) -> IosIapPurchaseResult;
+        #[swift_bridge(associated_to = IosIapPurchaseResult)]
         fn error(e: String) -> IosIapPurchaseResult;
 
         #[swift_bridge(associated_to = IosIapEnvironment)]

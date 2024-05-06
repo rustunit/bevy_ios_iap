@@ -482,6 +482,10 @@ public class IosIapPurchaseResult: IosIapPurchaseResultRefMut {
     }
 }
 extension IosIapPurchaseResult {
+    class public func unknown<GenericIntoRustString: IntoRustString>(_ id: GenericIntoRustString) -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$unknown({ let rustString = id.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
     class public func error<GenericIntoRustString: IntoRustString>(_ e: GenericIntoRustString) -> IosIapPurchaseResult {
         IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$error({ let rustString = e.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
     }

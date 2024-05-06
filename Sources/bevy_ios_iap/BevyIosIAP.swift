@@ -12,13 +12,14 @@ import RustXcframework
 public func ios_iap_products(products:RustVec<RustString>)
 {
     Task {
+        //TODO: wrap in do catch for error handling
+        
         var productIds:[String] = []
         for p in products {
             productIds.append(p.as_str().toString())
         }
         
         let products = try await Product.products(for: productIds)
-//        print("products:\n \(products)")
         
         let rust_products = RustVec<IosIapProduct>()
         
@@ -46,7 +47,12 @@ public func ios_iap_purchase(id: RustString)
         do {
             let productIds = [id.toString()]
             let products = try await Product.products(for: productIds)
-            let purchase  = try await products[0].purchase()
+            
+            if products.isEmpty {
+                return purchase_processed(IosIapPurchaseResult.unknown(id.toString()))
+            }
+            
+            let purchase  = try await products.first!.purchase()
             
             let result = switch purchase {
             case .success(_):
@@ -60,7 +66,6 @@ public func ios_iap_purchase(id: RustString)
             
             purchase_processed(result)
         } catch {
-            print("ios_iap_purchase error: \(error).")
             purchase_processed(IosIapPurchaseResult.error(error.localizedDescription))
         }
    }
@@ -88,8 +93,7 @@ public func ios_iap_transaction_finish(id: UInt64) {
             }
             
             transaction_finished(IosIapTransactionFinished.unknown(id))
-        }catch {
-            print("ios_iap_transaction_finish error: \(error).")
+        } catch {
             transaction_finished(IosIapTransactionFinished.error(error.localizedDescription))
         }
     }
@@ -97,6 +101,8 @@ public func ios_iap_transaction_finish(id: UInt64) {
 
 public func ios_iap_transactions_all() {
     Task {
+        //TODO: wrap in do catch for error handling
+        
         var transactions = RustVec<IosIapTransaction>.init()
         
         for await t in Transaction.all {

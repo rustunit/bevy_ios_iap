@@ -32,6 +32,8 @@ pub enum IosIapPurchaseResult {
     Success,
     Canceled,
     Pending,
+    /// Unknown / invalid product ID
+    Unknown(String),
     Error(String),
 }
 
@@ -46,6 +48,10 @@ impl IosIapPurchaseResult {
 
     fn pending() -> Self {
         Self::Pending
+    }
+
+    fn unknown(id: String) -> Self {
+        Self::Unknown(id)
     }
 
     fn error(e: String) -> Self {
