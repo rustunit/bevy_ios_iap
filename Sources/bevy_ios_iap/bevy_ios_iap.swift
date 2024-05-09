@@ -5,6 +5,9 @@ public func products_received(_ products: RustVec<IosIapProduct>) {
 public func all_transactions(_ transactions: RustVec<IosIapTransaction>) {
     __swift_bridge__$all_transactions({ let val = transactions; val.isOwned = false; return val.ptr }())
 }
+public func current_entitlements(_ transactions: RustVec<IosIapTransaction>) {
+    __swift_bridge__$current_entitlements({ let val = transactions; val.isOwned = false; return val.ptr }())
+}
 public func purchase_processed(_ result: IosIapPurchaseResult) {
     __swift_bridge__$purchase_processed({result.isOwned = false; return result.ptr;}())
 }
@@ -32,6 +35,11 @@ public func __swift_bridge__ios_iap_purchase (_ id: UnsafeMutableRawPointer) {
 @_cdecl("__swift_bridge__$ios_iap_transactions_all")
 public func __swift_bridge__ios_iap_transactions_all () {
     ios_iap_transactions_all()
+}
+
+@_cdecl("__swift_bridge__$ios_iap_transactions_current_entitlements")
+public func __swift_bridge__ios_iap_transactions_current_entitlements () {
+    ios_iap_transactions_current_entitlements()
 }
 
 @_cdecl("__swift_bridge__$ios_iap_transaction_finish")
@@ -482,6 +490,18 @@ public class IosIapPurchaseResult: IosIapPurchaseResultRefMut {
     }
 }
 extension IosIapPurchaseResult {
+    class public func success(_ t: IosIapTransaction) -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$success({t.isOwned = false; return t.ptr;}()))
+    }
+
+    class public func canceled<GenericIntoRustString: IntoRustString>(_ id: GenericIntoRustString) -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$canceled({ let rustString = id.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
+    class public func pending<GenericIntoRustString: IntoRustString>(_ id: GenericIntoRustString) -> IosIapPurchaseResult {
+        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$pending({ let rustString = id.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
     class public func unknown<GenericIntoRustString: IntoRustString>(_ id: GenericIntoRustString) -> IosIapPurchaseResult {
         IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$unknown({ let rustString = id.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
     }
@@ -500,19 +520,6 @@ public class IosIapPurchaseResultRef {
 
     public init(ptr: UnsafeMutableRawPointer) {
         self.ptr = ptr
-    }
-}
-extension IosIapPurchaseResultRef {
-    class public func success() -> IosIapPurchaseResult {
-        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$success())
-    }
-
-    class public func canceled() -> IosIapPurchaseResult {
-        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$canceled())
-    }
-
-    class public func pending() -> IosIapPurchaseResult {
-        IosIapPurchaseResult(ptr: __swift_bridge__$IosIapPurchaseResult$pending())
     }
 }
 extension IosIapPurchaseResult: Vectorizable {

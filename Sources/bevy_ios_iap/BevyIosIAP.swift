@@ -55,13 +55,12 @@ public func ios_iap_purchase(id: RustString)
             let purchase  = try await products.first!.purchase()
             
             let result = switch purchase {
-            case .success(_):
-                //TODO: forward t.id
-                IosIapPurchaseResult.success()
+            case .success(let transactionResult):
+                IosIapPurchaseResult.success(convert_transaction(transactionResult.unsafePayloadValue))
             case .userCancelled:
-                IosIapPurchaseResult.canceled()
+                IosIapPurchaseResult.canceled(id.toString())
             case .pending:
-                IosIapPurchaseResult.pending()
+                IosIapPurchaseResult.pending(id.toString())
             }
             
             purchase_processed(result)
@@ -118,6 +117,25 @@ public func ios_iap_transactions_all() {
     }
 }
 
+public func ios_iap_transactions_current_entitlements() {
+    Task {
+        //TODO: wrap in do catch for error handling
+        
+        var transactions = RustVec<IosIapTransaction>.init()
+        
+        for await t in Transaction.currentEntitlements {
+            //only return signed/verified transactions
+            guard case .verified(let transaction) = t else {
+                continue
+            }
+            
+            transactions.push(value:convert_transaction(transaction))
+        }
+        
+        current_entitlements(transactions)
+    }
+}
+
 public func convert_transaction(_ transaction: (Transaction)) -> IosIapTransaction {
    let type = if transaction.productType == Product.ProductType.consumable {
        IosIapProductType.new_consumable(false)
@@ -145,7 +163,7 @@ public func convert_transaction(_ transaction: (Transaction)) -> IosIapTransacti
    
    let store = IosIapStorefront.storefront(transaction.storefront.id, transaction.storefront.countryCode)
    
-   var t  = IosIapTransaction.new_transaction(transaction.id, transaction.productID, transaction.productID, UInt64(transaction.purchaseDate.timeIntervalSince1970), Int32(transaction.purchasedQuantity),  transaction.storefrontCountryCode, UInt64(transaction.signedDate.timeIntervalSince1970), transaction.isUpgraded, type, reason, env, store)
+   var t  = IosIapTransaction.new_transaction(transaction.id, transaction.productID, transaction.appBundleID, UInt64(transaction.purchaseDate.timeIntervalSince1970), Int32(transaction.purchasedQuantity),  transaction.storefrontCountryCode, UInt64(transaction.signedDate.timeIntervalSince1970), transaction.isUpgraded, type, reason, env, store)
    
    if let revocationDate = transaction.revocationDate {
        IosIapTransaction.add_revocation(t, UInt64(revocationDate.timeIntervalSince1970))

@@ -3,7 +3,9 @@ mod native;
 mod plugin;
 mod transaction;
 
-pub use methods::{all_transactions, finish_transaction, get_products, init, purchase};
+pub use methods::{
+    all_transactions, current_entitlements, finish_transaction, get_products, init, purchase,
+};
 pub use plugin::{IosIapEvents, IosIapPlugin};
 pub use transaction::IosIapTransaction;
 
@@ -29,25 +31,25 @@ impl IosIapTransactionFinished {
 
 #[derive(Debug, Clone)]
 pub enum IosIapPurchaseResult {
-    Success,
-    Canceled,
-    Pending,
+    Success(IosIapTransaction),
+    Canceled(String),
+    Pending(String),
     /// Unknown / invalid product ID
     Unknown(String),
     Error(String),
 }
 
 impl IosIapPurchaseResult {
-    fn success() -> Self {
-        Self::Success
+    fn success(t: IosIapTransaction) -> Self {
+        Self::Success(t)
     }
 
-    fn canceled() -> Self {
-        Self::Canceled
+    fn canceled(id: String) -> Self {
+        Self::Canceled(id)
     }
 
-    fn pending() -> Self {
-        Self::Pending
+    fn pending(id: String) -> Self {
+        Self::Pending(id)
     }
 
     fn unknown(id: String) -> Self {

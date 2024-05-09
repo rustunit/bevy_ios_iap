@@ -34,3 +34,16 @@ pub fn all_transactions() {
     #[cfg(target_os = "ios")]
     native::ios_iap_transactions_all();
 }
+
+/// "A sequence of the latest transactions that entitle a user to in-app purchases and subscriptions."
+///
+/// > The current entitlements sequence emits the latest transaction for each product the user has an entitlement to, specifically:
+/// > A transaction for each non-consumable in-app purchase
+/// > The latest transaction for each auto-renewable subscription that has a Product.SubscriptionInfo.RenewalState state of subscribed or inGracePeriod
+/// > The latest transaction for each non-renewing subscription, including finished ones
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction/3851204-currententitlements>
+pub fn current_entitlements() {
+    #[cfg(target_os = "ios")]
+    native::ios_iap_transactions_current_entitlements();
+}

@@ -42,11 +42,11 @@ mod ffi {
         fn new_auto_renewable() -> IosIapProductType;
 
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
-        fn success() -> IosIapPurchaseResult;
+        fn success(t: IosIapTransaction) -> IosIapPurchaseResult;
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
-        fn canceled() -> IosIapPurchaseResult;
+        fn canceled(id: String) -> IosIapPurchaseResult;
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
-        fn pending() -> IosIapPurchaseResult;
+        fn pending(id: String) -> IosIapPurchaseResult;
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
         fn unknown(id: String) -> IosIapPurchaseResult;
         #[swift_bridge(associated_to = IosIapPurchaseResult)]
@@ -97,6 +97,7 @@ mod ffi {
 
         fn products_received(products: Vec<IosIapProduct>);
         fn all_transactions(transactions: Vec<IosIapTransaction>);
+        fn current_entitlements(transactions: Vec<IosIapTransaction>);
         fn purchase_processed(result: IosIapPurchaseResult);
         fn transaction_update(t: IosIapTransaction);
         fn transaction_finished(t: IosIapTransactionFinished);
@@ -107,6 +108,7 @@ mod ffi {
         pub fn ios_iap_products(products: Vec<String>);
         pub fn ios_iap_purchase(id: String);
         pub fn ios_iap_transactions_all();
+        pub fn ios_iap_transactions_current_entitlements();
         pub fn ios_iap_transaction_finish(id: u64);
     }
 }
@@ -134,6 +136,15 @@ fn all_transactions(transactions: Vec<IosIapTransaction>) {
         .as_ref()
         .unwrap()
         .send(IosIapEvents::AllTransactions(transactions));
+}
+
+fn current_entitlements(transactions: Vec<IosIapTransaction>) {
+    SENDER
+        .get()
+        .unwrap()
+        .as_ref()
+        .unwrap()
+        .send(IosIapEvents::CurrentEntitlements(transactions));
 }
 
 fn transaction_finished(t: IosIapTransactionFinished) {

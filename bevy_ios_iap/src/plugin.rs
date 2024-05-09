@@ -14,6 +14,8 @@ pub enum IosIapEvents {
 
     /// async response to `all_transaction` request
     AllTransactions(Vec<IosIapTransaction>),
+    /// async response to `current_entitlements` request
+    CurrentEntitlements(Vec<IosIapTransaction>),
 }
 
 ///
