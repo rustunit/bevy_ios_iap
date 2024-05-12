@@ -1,5 +1,10 @@
 use crate::{IosIapEnvironment, IosIapProductType, IosIapStorefront, IosIapTransactionReason};
 
+/// Representation of a Transaction.
+/// Mirrors the Transcation type in Apple's StoreKit2 closely.
+/// See official docs for more details on the individual fields.
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction>
 #[derive(Debug, Clone)]
 pub struct IosIapTransaction {
     pub id: u64,

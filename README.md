@@ -7,7 +7,7 @@
 [sh_crates]: https://img.shields.io/crates/v/bevy_ios_iap.svg
 [lk_crates]: https://crates.io/crates/bevy_ios_iap
 [sh_docs]: https://img.shields.io/docsrs/bevy_ios_iap
-[lk_docs]: https://docs.rs/bevy_ios_gamecenter/latest/bevy_ios_iap/
+[lk_docs]: https://docs.rs/bevy_ios_iap/latest/bevy_ios_iap/
 [sh_discord]: https://img.shields.io/discord/1176858176897953872?label=discord&color=5561E6
 [lk_discord]: https://discord.gg/rQNeEnMhus
 
@@ -65,7 +65,7 @@ or
 
 ```toml
 # always pin to the same exact version you also of the Swift package
-bevy_ios_iap = { version = "=0.2.0" }
+bevy_ios_iap = { version = "=0.2.1" }
 ```
 
 ### 3. Setup Plugin
@@ -79,6 +79,12 @@ app.add_plugins(IosIapPlugin::new(true));
 
 ```rust
 fn bevy_system() {
+    // If you set the plugin to manual init, this will register the 
+    // TranscactionObserver to listen to updates to any Transactions and trigger
+    // `IosIapEvents::Transaction` accordingly.
+    // Note: this will require the user to be logged in into their apple-id and popup a login dialog if not
+    bevy_ios_iap::init();
+
     // request product details, product IDs have to be explicitly provided
     // this will lead to a response: `IosIapEvents::Products`
     bevy_ios_iap::get_products(vec!["com.rustunit.zoolitaire.levelunlock".into()]);

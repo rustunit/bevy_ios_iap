@@ -9,10 +9,16 @@ pub use methods::{
 pub use plugin::{IosIapEvents, IosIapPlugin};
 pub use transaction::IosIapTransaction;
 
+/// Expected event data in response to [`finish_transaction`] method call.
+///
+/// See Event [`IosIapEvents`]
 #[derive(Debug, Clone)]
 pub enum IosIapTransactionFinished {
+    /// Unknown Unfinished Transaction, maybe a concurrent process to finish it in the meantime?
     UnknownTransaction(u64),
+    /// Transaction successfully finished
     Finished(IosIapTransaction),
+    /// Some error occured
     Error(String),
 }
 
@@ -29,13 +35,21 @@ impl IosIapTransactionFinished {
     }
 }
 
+/// Expected event data in response to [`purchase`] method call.
+///
+/// See Event [`IosIapEvents`]
 #[derive(Debug, Clone)]
 pub enum IosIapPurchaseResult {
+    /// Purchase successful
     Success(IosIapTransaction),
+    /// User canceled the purchase
     Canceled(String),
+    /// The purchase is pending, and requires action from the customer. If the transaction completes,
+    /// it's available through the TransactionObserver registered via [`init`] and lead to [`IosIapEvents::Transaction`] calls.
     Pending(String),
-    /// Unknown / invalid product ID
+    /// Unknown / invalid product ID was used to trigger purchase
     Unknown(String),
+    /// Error occured
     Error(String),
 }
 
@@ -61,6 +75,12 @@ impl IosIapPurchaseResult {
     }
 }
 
+/// A cause of a purchase transaction, indicating whether it’s a customer’s purchase or
+/// an auto-renewable subscription renewal that the system initiates.
+///
+/// Part of [`IosIapTransaction`].
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction/reason>
 #[derive(Debug, Clone)]
 pub enum IosIapTransactionReason {
     Renewal,
@@ -76,6 +96,11 @@ impl IosIapTransactionReason {
     }
 }
 
+/// The server environment that generates and signs the transaction.
+///
+/// Part of [`IosIapTransaction`].
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction/3963920-environment>
 #[derive(Debug, Clone)]
 pub enum IosIapEnvironment {
     Production,
@@ -95,6 +120,11 @@ impl IosIapEnvironment {
     }
 }
 
+/// The App Store storefront associated with the transaction.
+///
+/// Part of [`IosIapTransaction`].
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction/4193541-storefront>
 #[derive(Debug, Clone, Default)]
 pub struct IosIapStorefront {
     pub id: String,
@@ -107,6 +137,11 @@ impl IosIapStorefront {
     }
 }
 
+/// The type of the in-app purchase.
+///
+/// Part of [`IosIapTransaction`] and [`IosIapProduct`].
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction/3749708-producttype>
 #[derive(Debug, Clone)]
 pub enum IosIapProductType {
     Consumable,
@@ -133,6 +168,11 @@ impl IosIapProductType {
     }
 }
 
+/// Expected event data in response to [`get_products`] method call.
+///
+/// See Event [`IosIapEvents`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product>
 #[derive(Debug, Clone)]
 pub struct IosIapProduct {
     pub id: String,
