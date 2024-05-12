@@ -29,7 +29,7 @@ pub struct IosIapPlugin {
 }
 
 impl IosIapPlugin {
-    /// create plugin and define whether it will call [`init`] automatically right on startup.
+    /// create plugin and define whether it will call [`init`][`crate::init`] automatically right on startup.
     pub fn new(auto_init: bool) -> Self {
         Self { auto_init }
     }
