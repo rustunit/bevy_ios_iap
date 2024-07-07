@@ -15,11 +15,11 @@ description = "Bevy Plugin and Swift Package to provide access to iOS native Sto
 crate-type = ["staticlib", "rlib"]
 
 [dependencies]
-bevy_app = { version = "0.13", default-features = false }
-bevy_ecs = { version = "0.13", default-features = false }
-bevy_ecs_macros = { version = "0.13", default-features = false }
-bevy_log = { version = "0.13", default-features = false }
-bevy_crossbeam_event = "0.5"
+bevy_app = { version = "0.14", default-features = false }
+bevy_ecs = { version = "0.14", default-features = false }
+bevy_ecs_macros = { version = "0.14", default-features = false }
+bevy_log = { version = "0.14", default-features = false }
+bevy_crossbeam_event = { git = "https://github.com/extrawurst/bevy_crossbeam_event.git", branch = "bevy-0.14" }
 swift-bridge = "0.1"
 
 [build-dependencies]

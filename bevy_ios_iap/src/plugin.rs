@@ -49,7 +49,7 @@ impl Plugin for IosIapPlugin {
             app.add_crossbeam_event::<IosIapEvents>();
 
             let sender = app
-                .world
+                .world()
                 .get_resource::<CrossbeamEventSender<IosIapEvents>>()
                 .unwrap()
                 .clone();
