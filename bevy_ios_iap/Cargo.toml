@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ios_iap"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2021"
 build = "build.rs"
 readme = "../README.md"
@@ -19,7 +19,7 @@ bevy_app = { version = "0.14", default-features = false }
 bevy_ecs = { version = "0.14", default-features = false }
 bevy_ecs_macros = { version = "0.14", default-features = false }
 bevy_log = { version = "0.14", default-features = false }
-bevy_crossbeam_event = { git = "https://github.com/extrawurst/bevy_crossbeam_event.git", branch = "bevy-0.14" }
+bevy_crossbeam_event = "0.6"
 swift-bridge = "0.1"
 
 [build-dependencies]

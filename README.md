@@ -126,6 +126,13 @@ fn process_iap_events(
 }
 ```
 
+## Bevy version support
+
+|bevy|bevy\_ios\_iap|
+|---|---|
+|0.14|0.3,main|
+|0.13|0.2|
+
 # License
 
 All code in this repository is dual-licensed under either:
