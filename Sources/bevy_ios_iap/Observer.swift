@@ -29,9 +29,11 @@ final class TransactionObserver {
             return
         }
         
-        let t = convert_transaction(transaction)
-        
-        transaction_update(t)
+        do {
+            let t = try convert_transaction(transaction)
+            transaction_update(t)
+        } catch {
+            print("error converting transaction: \(error.localizedDescription)")
+        }
     }
-    
 }

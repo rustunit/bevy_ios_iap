@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+* support subscriptions
+* new c systemparam providing observer based API
+* new fields in IosIapTransaction: `original_id`, `original_purchase_date`, `json_representation`, `currency`, `currency_code`, `revocation_reason`, `app_account_token`, `web_order_line_item_id`, `subscription_group_id`
+* all calls now do proper error handling
+* all calls take a request id and return it with the response used for `BevyIosIap`
+* `IosIapEvents::Transaction` is not `IosIapEvents::TransactionUpdate`
+* renamed `IosIapTransactionFinished` -> `IosIapTransactionFinishResponse`
+* renamed `IosIapPurchaseResult` -> `IosIapPurchaseResponse`
+* renamed `IosIapEvents` in `IosIapResponse` and moved `TransactionUpdate` into a new `IosIapEvents` to signify the difference between a pro-active event sent or a response to a previous request
+
 ## [0.3.0] - 2024-07-12
 
 ### Changed

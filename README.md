@@ -25,17 +25,15 @@ See also [bevy_ios_gamecenter](https://github.com/rustunit/bevy_ios_gamecenter),
 * purchase products
 * listen to changes in transaction states
 * fetch list of all transactions (to restore old purchases of non-consumables)
+* supports subscriptions
 
 ## Notes
 * does not return locally un-signed/un-verified transactions
 
 ## Todo
-* support subscription product type
-* remaining error handling in: `ios_iap_transactions_all` and `ios_iap_products`
 * allow access to signature for remote verification
 * support offers
 * support family sharing
-* transaction revocation reason
 
 ## Instructions
 
