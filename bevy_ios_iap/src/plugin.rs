@@ -2,24 +2,33 @@ use bevy_app::prelude::*;
 use bevy_ecs::prelude::*;
 
 use crate::transaction::IosIapTransaction;
-use crate::{IosIapProduct, IosIapPurchaseResult, IosIapTransactionFinished};
+use crate::{
+    IosIapProductsResponse, IosIapPurchaseResponse, IosIapTransactionFinishResponse,
+    IosIapTransactionResponse,
+};
 
-/// All events for communication from native iOS (Swift) side to Rust/Bevy
+/// All possible responses for communication from the native iOS (Swift) side to Rust/Bevy as a reaction to a method call / request.
+#[derive(Event, Clone, Debug)]
+pub enum IosIapResponse {
+    /// Triggered by calls to [`get_products`][crate::get_products]
+    Products((i64, IosIapProductsResponse)),
+    /// Triggered by calls to [`purchase`][crate::purchase]
+    Purchase((i64, IosIapPurchaseResponse)),
+    /// Triggered in response to calls to [`finish_transaction`][crate::finish_transaction]
+    TransactionFinished((i64, IosIapTransactionFinishResponse)),
+    /// Triggered in response to calls to [`all_transactions`][crate::all_transactions]
+    AllTransactions((i64, IosIapTransactionResponse)),
+    /// Triggered in response to calls to [`current_entitlements`][crate::current_entitlements]
+    CurrentEntitlements((i64, IosIapTransactionResponse)),
+}
+
+/// Events for pro-active communication from native iOS (Swift) side to Rust/Bevy that are not a direct response to a request.
+#[non_exhaustive]
 #[derive(Event, Clone, Debug)]
 pub enum IosIapEvents {
-    /// Triggered by calls to [`get_products`][crate::get_products]
-    Products(Vec<IosIapProduct>),
-    /// Triggered by calls to [`purchase`][crate::purchase]
-    Purchase(IosIapPurchaseResult),
     /// Triggered automatically by TransactionObserver registered by [`init`][crate::init]
-    /// for every update on any Transaction while app is running.
-    Transaction(IosIapTransaction),
-    /// Triggered in response to calls to [`finish_transaction`][crate::finish_transaction]
-    TransactionFinished(IosIapTransactionFinished),
-    /// Triggered in response to calls to [`all_transactions`][crate::all_transactions]
-    AllTransactions(Vec<IosIapTransaction>),
-    /// Triggered in response to calls to [`current_entitlements`][crate::current_entitlements]
-    CurrentEntitlements(Vec<IosIapTransaction>),
+    /// for every update on any Transaction while the app is running.
+    TransactionUpdate(IosIapTransaction),
 }
 
 /// Bevy plugin to integrate access to iOS StoreKit2
@@ -37,9 +46,12 @@ impl IosIapPlugin {
 
 impl Plugin for IosIapPlugin {
     fn build(&self, app: &mut App) {
+        app.add_plugins(crate::request::plugin);
+
         #[cfg(not(target_os = "ios"))]
         {
             app.add_event::<IosIapEvents>();
+            app.add_event::<IosIapResponse>();
         }
 
         #[cfg(target_os = "ios")]
@@ -54,7 +66,17 @@ impl Plugin for IosIapPlugin {
                 .unwrap()
                 .clone();
 
-            crate::native::set_sender(sender);
+            crate::native::set_sender_events(sender);
+
+            app.add_crossbeam_event::<IosIapResponse>();
+
+            let sender = app
+                .world()
+                .get_resource::<CrossbeamEventSender<IosIapResponse>>()
+                .unwrap()
+                .clone();
+
+            crate::native::set_sender_response(sender);
 
             if self.auto_init {
                 crate::native::ios_iap_init();

@@ -1,79 +1,23 @@
 mod methods;
 mod native;
 mod plugin;
+mod request;
+mod response;
 mod transaction;
 
 pub use methods::{
     all_transactions, current_entitlements, finish_transaction, get_products, init, purchase,
 };
-pub use plugin::{IosIapEvents, IosIapPlugin};
+pub use plugin::{IosIapEvents, IosIapPlugin, IosIapResponse};
+pub use request::{
+    AllTransactions, BevyIosIap, BevyIosIapRequestBuilder, CurrentEntitlements, FinishTransaction,
+    Products, Purchase,
+};
+pub use response::{
+    IosIapProductsResponse, IosIapPurchaseResponse, IosIapTransactionFinishResponse,
+    IosIapTransactionResponse,
+};
 pub use transaction::IosIapTransaction;
-
-/// Expected event data in response to [`finish_transaction`] method call.
-///
-/// See Event [`IosIapEvents`]
-#[derive(Debug, Clone)]
-pub enum IosIapTransactionFinished {
-    /// Unknown Unfinished Transaction, maybe a concurrent process to finish it in the meantime?
-    UnknownTransaction(u64),
-    /// Transaction successfully finished
-    Finished(IosIapTransaction),
-    /// Some error occured
-    Error(String),
-}
-
-impl IosIapTransactionFinished {
-    fn unknown(id: u64) -> Self {
-        Self::UnknownTransaction(id)
-    }
-
-    fn finished(t: IosIapTransaction) -> Self {
-        Self::Finished(t)
-    }
-    fn error(e: String) -> Self {
-        Self::Error(e)
-    }
-}
-
-/// Expected event data in response to [`purchase`] method call.
-///
-/// See Event [`IosIapEvents`]
-#[derive(Debug, Clone)]
-pub enum IosIapPurchaseResult {
-    /// Purchase successful
-    Success(IosIapTransaction),
-    /// User canceled the purchase
-    Canceled(String),
-    /// The purchase is pending, and requires action from the customer. If the transaction completes,
-    /// it's available through the TransactionObserver registered via [`init`] and lead to [`IosIapEvents::Transaction`] calls.
-    Pending(String),
-    /// Unknown / invalid product ID was used to trigger purchase
-    Unknown(String),
-    /// Error occured
-    Error(String),
-}
-
-impl IosIapPurchaseResult {
-    fn success(t: IosIapTransaction) -> Self {
-        Self::Success(t)
-    }
-
-    fn canceled(id: String) -> Self {
-        Self::Canceled(id)
-    }
-
-    fn pending(id: String) -> Self {
-        Self::Pending(id)
-    }
-
-    fn unknown(id: String) -> Self {
-        Self::Unknown(id)
-    }
-
-    fn error(e: String) -> Self {
-        Self::Error(e)
-    }
-}
 
 /// A cause of a purchase transaction, indicating whether it’s a customer’s purchase or
 /// an auto-renewable subscription renewal that the system initiates.
@@ -181,6 +125,7 @@ pub struct IosIapProduct {
     pub description: String,
     pub price: f64,
     pub product_type: IosIapProductType,
+    pub subscription: Option<IosIapSubscriptionInfo>,
 }
 
 impl IosIapProduct {
@@ -199,6 +144,162 @@ impl IosIapProduct {
             description,
             price,
             product_type,
+            subscription: None,
         }
+    }
+
+    fn subscription(p: &mut Self, info: IosIapSubscriptionInfo) {
+        p.subscription = Some(info);
+    }
+}
+
+/// Expected event data in response to [`get_products`] method call.
+///
+/// See [`IosIapProduct`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product/subscriptioninfo>
+#[derive(Debug, Clone)]
+pub struct IosIapSubscriptionInfo {
+    pub group_id: String,
+    pub period: IosIapSubscriptionPeriod,
+    pub is_eligible_for_intro_offer: bool,
+    pub state: Vec<IosIapSubscriptionStatus>,
+}
+
+impl IosIapSubscriptionInfo {
+    fn new(
+        group_id: String,
+        period: IosIapSubscriptionPeriod,
+        is_eligible_for_intro_offer: bool,
+        state: Vec<IosIapSubscriptionStatus>,
+    ) -> Self {
+        Self {
+            group_id,
+            period,
+            is_eligible_for_intro_offer,
+            state,
+        }
+    }
+}
+
+/// Used in [`IosIapSubscriptionPeriod`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product/subscriptionperiod/unit>
+#[derive(Debug, Clone)]
+pub enum IosIapSubscriptionPeriodUnit {
+    Day,
+    Week,
+    Month,
+    Year,
+}
+
+impl IosIapSubscriptionPeriodUnit {
+    pub fn day() -> Self {
+        Self::Day
+    }
+    pub fn week() -> Self {
+        Self::Week
+    }
+    pub fn month() -> Self {
+        Self::Month
+    }
+    pub fn year() -> Self {
+        Self::Year
+    }
+}
+
+/// Used in [`IosIapSubscriptionInfo`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product/subscriptionperiod>
+#[derive(Debug, Clone)]
+pub struct IosIapSubscriptionPeriod {
+    pub unit: IosIapSubscriptionPeriodUnit,
+    pub value: i32,
+}
+
+impl IosIapSubscriptionPeriod {
+    pub fn new(unit: IosIapSubscriptionPeriodUnit, value: i32) -> Self {
+        Self { unit, value }
+    }
+}
+
+/// Used in [`IosIapSubscriptionStatus`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product/subscriptioninfo/renewalstate>
+#[derive(Debug, Clone)]
+pub enum IosIapSubscriptionRenewalState {
+    Subscribed,
+    Expired,
+    InBillingRetryPeriod,
+    InGracePeriod,
+    Revoked,
+}
+
+impl IosIapSubscriptionRenewalState {
+    pub fn subscribed() -> Self {
+        Self::Subscribed
+    }
+    pub fn expired() -> Self {
+        Self::Expired
+    }
+    pub fn in_billing_retry_period() -> Self {
+        Self::InBillingRetryPeriod
+    }
+    pub fn in_grace_period() -> Self {
+        Self::InGracePeriod
+    }
+    pub fn revoked() -> Self {
+        Self::Revoked
+    }
+}
+
+/// Used in [`IosIapSubscriptionInfo`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product/subscriptioninfo/status>
+#[derive(Debug, Clone)]
+pub struct IosIapSubscriptionStatus {
+    pub state: IosIapSubscriptionRenewalState,
+    pub transaction: IosIapTransaction,
+}
+
+impl IosIapSubscriptionStatus {
+    pub fn new(state: IosIapSubscriptionRenewalState, transaction: IosIapTransaction) -> Self {
+        Self { state, transaction }
+    }
+}
+
+/// Used in [`IosIapTransaction`]
+///
+/// See <https://developer.apple.com/documentation/foundation/locale/currency>
+#[derive(Debug, Clone)]
+pub struct IosIapCurrency {
+    pub identifier: String,
+    pub is_iso_currency: bool,
+}
+
+impl IosIapCurrency {
+    pub fn new(identifier: String, is_iso_currency: bool) -> Self {
+        Self {
+            identifier,
+            is_iso_currency,
+        }
+    }
+}
+
+/// Used in [`IosIapTransaction`]
+///
+/// See <https://developer.apple.com/documentation/storekit/transaction/revocationreason>
+#[derive(Debug, Clone)]
+pub enum IosIapRevocationReason {
+    DeveloperIssue,
+    Other,
+}
+
+impl IosIapRevocationReason {
+    pub fn developer_issue() -> Self {
+        Self::DeveloperIssue
+    }
+    pub fn other() -> Self {
+        Self::Other
     }
 }
