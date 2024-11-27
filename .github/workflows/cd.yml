@@ -21,13 +21,15 @@ jobs:
     - name: Add iOS targets
       run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
+    - uses: extractions/setup-just@v1
+    
     - name: Rust Cache
       uses: Swatinem/rust-cache@v2
       with:
         workspaces: "./bevy_ios_iap"
 
     - name: make xcframework archive
-      run: make zip
+      run: just zip
 
     - name: Release
       uses: softprops/action-gh-release@v2
