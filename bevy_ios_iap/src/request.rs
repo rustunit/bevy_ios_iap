@@ -5,7 +5,7 @@ use bevy_ecs::{
 };
 
 use crate::{
-    plugin::IosIapResponse, IosIapEvents, IosIapProductsResponse, IosIapPurchaseResponse,
+    plugin::IosIapResponse, IosIapProductsResponse, IosIapPurchaseResponse,
     IosIapTransactionFinishResponse, IosIapTransactionResponse,
 };
 
@@ -139,7 +139,7 @@ pub fn plugin(app: &mut App) {
         PreUpdate,
         (
             cleanup_finished_requests,
-            process_events.run_if(on_event::<IosIapEvents>()),
+            process_events.run_if(on_event::<IosIapResponse>),
         )
             .chain()
             .in_set(BevyIosIapSet),
