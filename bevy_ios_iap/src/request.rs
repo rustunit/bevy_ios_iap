@@ -139,7 +139,7 @@ pub fn plugin(app: &mut App) {
         PreUpdate,
         (
             cleanup_finished_requests,
-            process_events.run_if(on_event::<IosIapResponse>()),
+            process_events.run_if(on_event::<IosIapResponse>),
         )
             .chain()
             .in_set(BevyIosIapSet),

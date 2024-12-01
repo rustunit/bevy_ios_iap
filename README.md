@@ -26,6 +26,7 @@ See also [bevy_ios_gamecenter](https://github.com/rustunit/bevy_ios_gamecenter),
 * listen to changes in transaction states
 * fetch list of all transactions (to restore old purchases of non-consumables)
 * supports subscriptions
+* convenient observer based API
 
 ## Notes
 * does not return locally un-signed/un-verified transactions
@@ -128,7 +129,8 @@ fn process_iap_events(
 
 |bevy|bevy\_ios\_iap|
 |---|---|
-|0.14|0.3,0.4,main|
+|0.15|0.5,main|
+|0.14|0.3,0.4|
 |0.13|0.2|
 
 # License
