@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## [0.4.1] - 2024-12-01
+## [0.4.2] - 2024-12-01
 
 ### Fixed
 * fixed broken observer api because we listened to the wrong event type
