@@ -77,7 +77,7 @@ app.add_plugins(IosIapPlugin::new(true));
 ```
 
 ```rust
-fn bevy_system() {
+fn bevy_system(mut iap: BevyIosIap) {
     // If you set the plugin to manual init, this will register the 
     // TranscactionObserver to listen to updates to any Transactions and trigger
     // `IosIapEvents::Transaction` accordingly.
@@ -85,22 +85,36 @@ fn bevy_system() {
     bevy_ios_iap::init();
 
     // request product details, product IDs have to be explicitly provided
-    // this will lead to a response: `IosIapEvents::Products`
-    bevy_ios_iap::get_products(vec!["com.rustunit.zoolitaire.levelunlock".into()]);
+     iap.products(vec!["com.rustunit.zoolitaire.levelunlock".into())])
+        .on_response(|trigger: Trigger<Products>| match &trigger.event().0 {
+            IosIapProductsResponse::Done(products) => {
+                info!("products loaded: {}", products.len());
+
+                for p in products {
+                    info!("product: {:?}", p);
+                }
+            }
+            IosIapProductsResponse::Error(e) => error!("error fetching products: {e}"),
+        });
 
     // trigger a product purchase for a specific product ID
-    // this will lead to a response: `IosIapEvents::Purchase`
-    bevy_ios_iap::purchase("com.rustunit.zoolitaire.levelunlock".into());
+    iap.purchase("com.rustunit.zoolitaire.levelunlock".into())
+        .on_response(|trigger: Trigger<Purchase>|{
+            match &trigger.event().0 {
+                IosIapPurchaseResponse::Success(t) => {
+                    info!("just purchased: '{}' {}", t.product_id, t.id);
+
+                    iap.finish_transaction(t.id).on_response(on_finish_transaction);
+                }
+                _ => {}
+            }
+        });
 
     // request to restore active subscriptions and non-consumables
-    // this will lead to a response: `IosIapEvents::CurrentEntitlements`
-    bevy_ios_iap::current_entitlements();
-
-    // marks a transaction as finished after the product was provided to the customer.
-    // if this is not called a transaction will keep being triggered automatically on 
-    // app start as iOS wants us to be sure we granted the user the purchased good.
-    // this will lead to a response: `IosIapEvents::TransactionFinished`
-    bevy_ios_iap::finish_transaction(42);
+    iap.current_entitlements()
+        .on_response(|trigger: Trigger<CurrentEntitlements>|{
+            info!("current entitlements: {}", trigger.event());
+        });
 }
 ```
 
@@ -112,12 +126,8 @@ fn process_iap_events(
 ) {
     for e in events.read() {
         match e {
-            IosIapEvents::Products(_) => todo!(),
-            IosIapEvents::Purchase(_) => todo!(),
-            IosIapEvents::Transaction(_) => todo!(),
-            IosIapEvents::TransactionFinished(_) => todo!(),
-            IosIapEvents::AllTransactions(_) => todo!(),
-            IosIapEvents::CurrentEntitlements(_) => todo!(),
+            // this is triggered when a transaction verification state changes during the runtime of the app
+            IosIapEvents::TransactionUpdate(_) => todo!(),
         }
     }
 }
