@@ -34,5 +34,5 @@ zip: build-release
 	shasum -a 256 RustXcframework.xcframework.zip
 	shasum -a 256 RustXcframework.xcframework.zip > RustXcframework.xcframework.sha256.txt
 
-publish-crate:
+publish:
 	cd bevy_ios_iap && cargo publish --no-verify
