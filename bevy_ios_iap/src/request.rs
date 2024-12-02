@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 use bevy_app::{App, PreUpdate};
 use bevy_ecs::{
     prelude::*,
@@ -29,12 +31,6 @@ struct BevyIosIapSate {
     request_id: i64,
 }
 
-#[derive(SystemParam)]
-pub struct BevyIosIap<'w, 's> {
-    commands: Commands<'w, 's>,
-    res: ResMut<'w, BevyIosIapSate>,
-}
-
 #[derive(Component)]
 #[component(storage = "SparseSet")]
 struct RequestCurrentEntitlements;
@@ -61,56 +57,65 @@ struct RequestId(i64);
 #[derive(Component)]
 struct RequestEntity;
 
+#[derive(SystemParam)]
+pub struct BevyIosIap<'w, 's> {
+    commands: Commands<'w, 's>,
+    res: ResMut<'w, BevyIosIapSate>,
+}
+
 impl<'w, 's> BevyIosIap<'w, 's> {
-    pub fn current_entitlements(&mut self) -> BevyIosIapRequestBuilder<'_> {
+    pub fn current_entitlements(&mut self) -> BevyIosIapRequestBuilder<'_, CurrentEntitlements> {
         let id = self.res.request_id;
         self.res.request_id += 1;
         crate::methods::current_entitlements(id);
-        BevyIosIapRequestBuilder(self.commands.spawn((
+        BevyIosIapRequestBuilder::new(self.commands.spawn((
             RequestCurrentEntitlements,
             RequestId(id),
             RequestEntity,
         )))
     }
 
-    pub fn products(&mut self, products: Vec<String>) -> BevyIosIapRequestBuilder<'_> {
+    pub fn products(&mut self, products: Vec<String>) -> BevyIosIapRequestBuilder<'_, Products> {
         let id = self.res.request_id;
         self.res.request_id += 1;
         crate::methods::get_products(id, products);
-        BevyIosIapRequestBuilder(self.commands.spawn((
+        BevyIosIapRequestBuilder::new(self.commands.spawn((
             RequestProducts,
             RequestId(id),
             RequestEntity,
         )))
     }
 
-    pub fn purchase(&mut self, product_id: String) -> BevyIosIapRequestBuilder<'_> {
+    pub fn purchase(&mut self, product_id: String) -> BevyIosIapRequestBuilder<'_, Purchase> {
         let id = self.res.request_id;
         self.res.request_id += 1;
         crate::methods::purchase(id, product_id);
-        BevyIosIapRequestBuilder(self.commands.spawn((
+        BevyIosIapRequestBuilder::new(self.commands.spawn((
             RequestPurchase,
             RequestId(id),
             RequestEntity,
         )))
     }
 
-    pub fn finish_transaction(&mut self, transaction_id: u64) -> BevyIosIapRequestBuilder<'_> {
+    pub fn finish_transaction(
+        &mut self,
+        transaction_id: u64,
+    ) -> BevyIosIapRequestBuilder<'_, FinishTransaction> {
         let id = self.res.request_id;
         self.res.request_id += 1;
         crate::methods::finish_transaction(id, transaction_id);
-        BevyIosIapRequestBuilder(self.commands.spawn((
+        BevyIosIapRequestBuilder::new(self.commands.spawn((
             RequestFinishTransaction,
             RequestId(id),
             RequestEntity,
         )))
     }
 
-    pub fn all_transactions(&mut self) -> BevyIosIapRequestBuilder<'_> {
+    pub fn all_transactions(&mut self) -> BevyIosIapRequestBuilder<'_, AllTransactions> {
         let id = self.res.request_id;
         self.res.request_id += 1;
         crate::methods::all_transactions(id);
-        BevyIosIapRequestBuilder(self.commands.spawn((
+        BevyIosIapRequestBuilder::new(self.commands.spawn((
             RequestAllTransactions,
             RequestId(id),
             RequestEntity,
@@ -118,14 +123,21 @@ impl<'w, 's> BevyIosIap<'w, 's> {
     }
 }
 
-pub struct BevyIosIapRequestBuilder<'a>(EntityCommands<'a>);
+pub struct BevyIosIapRequestBuilder<'a, T>(EntityCommands<'a>, PhantomData<T>);
 
-impl<'a> BevyIosIapRequestBuilder<'a> {
-    pub fn on_response<RB: Bundle, RM, E: 'static + Event, OR: IntoObserverSystem<E, RB, RM>>(
+impl<'a, T> BevyIosIapRequestBuilder<'a, T>
+where
+    T: 'static + Event,
+{
+    fn new(ec: EntityCommands<'a>) -> Self {
+        Self(ec, PhantomData)
+    }
+
+    pub fn on_response<RB: Bundle, RM, OR: IntoObserverSystem<T, RB, RM>>(
         &mut self,
-        onresponse: OR,
+        on_response: OR,
     ) -> &mut Self {
-        self.0.observe(onresponse);
+        self.0.observe(on_response);
         self
     }
 }

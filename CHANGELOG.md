@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.5.1] - 2024-12-02
+
+### Changed
+* make `BevyIosIap` requests more typesafe, so you cannot assign a observer that does not match the response type
+
 ## [0.5.0] - 2024-12-01
 
 ### Fixed

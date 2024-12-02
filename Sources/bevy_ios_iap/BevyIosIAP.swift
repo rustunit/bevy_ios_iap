@@ -8,7 +8,6 @@
 import StoreKit
 import RustXcframework
 
-
 public func ios_iap_products(request:Int64, products:RustVec<RustString>)
 {
     Task {
@@ -104,7 +103,7 @@ public func ios_iap_transactions_all(request: Int64) {
             }
             
             all_transactions(request, IosIapTransactionResponse.done(transactions))
-        }catch {
+        } catch {
             all_transactions(request, IosIapTransactionResponse.error(error.localizedDescription))
         }
     }
