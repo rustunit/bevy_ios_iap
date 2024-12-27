@@ -6,3 +6,5 @@ DerivedData/
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+bevy_ios_iap_egui/target
+bevy_ios_iap_egui/Cargo.lock
