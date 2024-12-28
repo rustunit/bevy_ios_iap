@@ -25,6 +25,7 @@ It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-genera
 * fetch list of all transactions (to restore old purchases of non-consumables)
 * supports subscriptions
 * convenient observer based API
+* egui based debug ui crate see [bevy_ios_iap_egui folder](./bevy_ios_iap_egui/README.md)
 
 ## Notes
 * does not return locally un-signed/un-verified transactions
