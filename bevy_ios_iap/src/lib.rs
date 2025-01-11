@@ -14,8 +14,8 @@ pub use request::{
     Products, Purchase,
 };
 pub use response::{
-    IosIapProductsResponse, IosIapPurchaseResponse, IosIapTransactionFinishResponse,
-    IosIapTransactionResponse,
+    IosIapProductsResponse, IosIapPurchaseError, IosIapPurchaseResponse, IosIapStoreKitError,
+    IosIapTransactionFinishResponse, IosIapTransactionResponse,
 };
 pub use transaction::IosIapTransaction;
 

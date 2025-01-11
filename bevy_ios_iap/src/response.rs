@@ -76,8 +76,18 @@ pub enum IosIapPurchaseResponse {
     Pending(String),
     /// Unknown / invalid product ID was used to trigger purchase
     Unknown(String),
-    /// Error occured
+    /// Generic error
     Error(String),
+    /// Purchase error
+    PurchaseError {
+        error: IosIapPurchaseError,
+        localized_description: String,
+    },
+    /// store kit error
+    StoreKitError {
+        error: IosIapStoreKitError,
+        localized_description: String,
+    },
 }
 
 impl IosIapPurchaseResponse {
@@ -99,5 +109,113 @@ impl IosIapPurchaseResponse {
 
     pub(crate) fn error(e: String) -> Self {
         Self::Error(e)
+    }
+
+    pub(crate) fn purchase_error(
+        error: IosIapPurchaseError,
+        localized_description: String,
+    ) -> Self {
+        Self::PurchaseError {
+            error,
+            localized_description,
+        }
+    }
+
+    pub(crate) fn storekit_error(
+        error: IosIapStoreKitError,
+        localized_description: String,
+    ) -> Self {
+        Self::StoreKitError {
+            error,
+            localized_description,
+        }
+    }
+}
+
+/// Used in [`IosIapPurchaseResponse`]
+///
+/// See <https://developer.apple.com/documentation/storekit/product/purchaseerror>
+#[derive(Debug, Clone, Copy)]
+pub enum IosIapPurchaseError {
+    InvalidQuantity,
+    ProductUnavailable,
+    PurchaseNotAllowed,
+    IneligibleForOffer,
+    InvalidOfferIdentifier,
+    InvalidOfferPrice,
+    InvalidOfferSignature,
+    MissingOfferParameters,
+}
+
+impl IosIapPurchaseError {
+    pub fn invalid_quantity() -> Self {
+        Self::InvalidQuantity
+    }
+
+    pub fn product_unavailable() -> Self {
+        Self::ProductUnavailable
+    }
+
+    pub fn purchase_not_allowed() -> Self {
+        Self::PurchaseNotAllowed
+    }
+
+    pub fn ineligible_for_offer() -> Self {
+        Self::IneligibleForOffer
+    }
+
+    pub fn invalid_offer_identifier() -> Self {
+        Self::InvalidOfferIdentifier
+    }
+
+    pub fn invalid_offer_price() -> Self {
+        Self::InvalidOfferPrice
+    }
+
+    pub fn invalid_offer_signature() -> Self {
+        Self::InvalidOfferSignature
+    }
+
+    pub fn missing_offer_parameters() -> Self {
+        Self::MissingOfferParameters
+    }
+}
+
+/// Used in [`IosIapPurchaseResponse`]
+///
+/// See <https://developer.apple.com/documentation/storekit/storekiterror>
+#[derive(Debug, Clone)]
+pub enum IosIapStoreKitError {
+    Unknown,
+    UserCancelled,
+    NetworkError(String),
+    SystemError(String),
+    NotAvailableInStorefront,
+    NotEntitled,
+}
+
+impl IosIapStoreKitError {
+    pub fn unknown() -> Self {
+        Self::Unknown
+    }
+
+    pub fn user_cancelled() -> Self {
+        Self::UserCancelled
+    }
+
+    pub fn network_error(e: String) -> Self {
+        Self::NetworkError(e)
+    }
+
+    pub fn system_error(e: String) -> Self {
+        Self::SystemError(e)
+    }
+
+    pub fn not_available_in_storefront() -> Self {
+        Self::NotAvailableInStorefront
+    }
+
+    pub fn not_entitled() -> Self {
+        Self::NotEntitled
     }
 }

@@ -1260,6 +1260,215 @@ extension IosIapTransaction: Vectorizable {
 }
 
 
+public class IosIapStoreKitError: IosIapStoreKitErrorRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapStoreKitError$_free(ptr)
+        }
+    }
+}
+extension IosIapStoreKitError {
+    class public func network_error<GenericIntoRustString: IntoRustString>(_ e: GenericIntoRustString) -> IosIapStoreKitError {
+        IosIapStoreKitError(ptr: __swift_bridge__$IosIapStoreKitError$network_error({ let rustString = e.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
+    class public func system_error<GenericIntoRustString: IntoRustString>(_ e: GenericIntoRustString) -> IosIapStoreKitError {
+        IosIapStoreKitError(ptr: __swift_bridge__$IosIapStoreKitError$system_error({ let rustString = e.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+}
+public class IosIapStoreKitErrorRefMut: IosIapStoreKitErrorRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapStoreKitErrorRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapStoreKitErrorRef {
+    class public func unknown() -> IosIapStoreKitError {
+        IosIapStoreKitError(ptr: __swift_bridge__$IosIapStoreKitError$unknown())
+    }
+
+    class public func user_cancelled() -> IosIapStoreKitError {
+        IosIapStoreKitError(ptr: __swift_bridge__$IosIapStoreKitError$user_cancelled())
+    }
+
+    class public func not_available_in_storefront() -> IosIapStoreKitError {
+        IosIapStoreKitError(ptr: __swift_bridge__$IosIapStoreKitError$not_available_in_storefront())
+    }
+
+    class public func not_entitled() -> IosIapStoreKitError {
+        IosIapStoreKitError(ptr: __swift_bridge__$IosIapStoreKitError$not_entitled())
+    }
+}
+extension IosIapStoreKitError: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapStoreKitError$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapStoreKitError$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapStoreKitError) {
+        __swift_bridge__$Vec_IosIapStoreKitError$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapStoreKitError$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapStoreKitError(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapStoreKitErrorRef> {
+        let pointer = __swift_bridge__$Vec_IosIapStoreKitError$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapStoreKitErrorRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapStoreKitErrorRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapStoreKitError$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapStoreKitErrorRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapStoreKitErrorRef> {
+        UnsafePointer<IosIapStoreKitErrorRef>(OpaquePointer(__swift_bridge__$Vec_IosIapStoreKitError$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapStoreKitError$len(vecPtr)
+    }
+}
+
+
+public class IosIapPurchaseError: IosIapPurchaseErrorRefMut {
+    var isOwned: Bool = true
+
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+
+    deinit {
+        if isOwned {
+            __swift_bridge__$IosIapPurchaseError$_free(ptr)
+        }
+    }
+}
+public class IosIapPurchaseErrorRefMut: IosIapPurchaseErrorRef {
+    public override init(ptr: UnsafeMutableRawPointer) {
+        super.init(ptr: ptr)
+    }
+}
+public class IosIapPurchaseErrorRef {
+    var ptr: UnsafeMutableRawPointer
+
+    public init(ptr: UnsafeMutableRawPointer) {
+        self.ptr = ptr
+    }
+}
+extension IosIapPurchaseErrorRef {
+    class public func invalid_quantity() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$invalid_quantity())
+    }
+
+    class public func product_unavailable() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$product_unavailable())
+    }
+
+    class public func purchase_not_allowed() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$purchase_not_allowed())
+    }
+
+    class public func ineligible_for_offer() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$ineligible_for_offer())
+    }
+
+    class public func invalid_offer_identifier() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$invalid_offer_identifier())
+    }
+
+    class public func invalid_offer_price() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$invalid_offer_price())
+    }
+
+    class public func invalid_offer_signature() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$invalid_offer_signature())
+    }
+
+    class public func missing_offer_parameters() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$missing_offer_parameters())
+    }
+}
+extension IosIapPurchaseError: Vectorizable {
+    public static func vecOfSelfNew() -> UnsafeMutableRawPointer {
+        __swift_bridge__$Vec_IosIapPurchaseError$new()
+    }
+
+    public static func vecOfSelfFree(vecPtr: UnsafeMutableRawPointer) {
+        __swift_bridge__$Vec_IosIapPurchaseError$drop(vecPtr)
+    }
+
+    public static func vecOfSelfPush(vecPtr: UnsafeMutableRawPointer, value: IosIapPurchaseError) {
+        __swift_bridge__$Vec_IosIapPurchaseError$push(vecPtr, {value.isOwned = false; return value.ptr;}())
+    }
+
+    public static func vecOfSelfPop(vecPtr: UnsafeMutableRawPointer) -> Optional<Self> {
+        let pointer = __swift_bridge__$Vec_IosIapPurchaseError$pop(vecPtr)
+        if pointer == nil {
+            return nil
+        } else {
+            return (IosIapPurchaseError(ptr: pointer!) as! Self)
+        }
+    }
+
+    public static func vecOfSelfGet(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapPurchaseErrorRef> {
+        let pointer = __swift_bridge__$Vec_IosIapPurchaseError$get(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapPurchaseErrorRef(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfGetMut(vecPtr: UnsafeMutableRawPointer, index: UInt) -> Optional<IosIapPurchaseErrorRefMut> {
+        let pointer = __swift_bridge__$Vec_IosIapPurchaseError$get_mut(vecPtr, index)
+        if pointer == nil {
+            return nil
+        } else {
+            return IosIapPurchaseErrorRefMut(ptr: pointer!)
+        }
+    }
+
+    public static func vecOfSelfAsPtr(vecPtr: UnsafeMutableRawPointer) -> UnsafePointer<IosIapPurchaseErrorRef> {
+        UnsafePointer<IosIapPurchaseErrorRef>(OpaquePointer(__swift_bridge__$Vec_IosIapPurchaseError$as_ptr(vecPtr)))
+    }
+
+    public static func vecOfSelfLen(vecPtr: UnsafeMutableRawPointer) -> UInt {
+        __swift_bridge__$Vec_IosIapPurchaseError$len(vecPtr)
+    }
+}
+
+
 public class IosIapPurchaseResponse: IosIapPurchaseResponseRefMut {
     var isOwned: Bool = true
 
@@ -1292,6 +1501,14 @@ extension IosIapPurchaseResponse {
 
     class public func error<GenericIntoRustString: IntoRustString>(_ e: GenericIntoRustString) -> IosIapPurchaseResponse {
         IosIapPurchaseResponse(ptr: __swift_bridge__$IosIapPurchaseResponse$error({ let rustString = e.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
+    class public func purchase_error<GenericIntoRustString: IntoRustString>(_ error: IosIapPurchaseError, _ localized_description: GenericIntoRustString) -> IosIapPurchaseResponse {
+        IosIapPurchaseResponse(ptr: __swift_bridge__$IosIapPurchaseResponse$purchase_error({error.isOwned = false; return error.ptr;}(), { let rustString = localized_description.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
+    }
+
+    class public func storekit_error<GenericIntoRustString: IntoRustString>(_ error: IosIapStoreKitError, _ localized_description: GenericIntoRustString) -> IosIapPurchaseResponse {
+        IosIapPurchaseResponse(ptr: __swift_bridge__$IosIapPurchaseResponse$storekit_error({error.isOwned = false; return error.ptr;}(), { let rustString = localized_description.intoRustString(); rustString.isOwned = false; return rustString.ptr }()))
     }
 }
 public class IosIapPurchaseResponseRefMut: IosIapPurchaseResponseRef {

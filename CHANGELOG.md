@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.5.2] - 2024-01-11
+
+### Added
+* add `IosIapPurchaseError` and `IosIapStoreKitError` to `IosIapPurchaseResponse` to provide programmatic error handling
+
 ## [0.5.1] - 2024-12-02
 
 ### Changed

@@ -54,6 +54,10 @@ public func ios_iap_purchase(request:Int64, id: RustString) {
             }
             
             purchase_processed(request, result)
+        } catch let error as Product.PurchaseError  {
+            purchase_processed(request, IosIapPurchaseResponse.purchase_error(convert_purchase_error(error),error.localizedDescription))
+        } catch let error as StoreKitError  {
+            purchase_processed(request, IosIapPurchaseResponse.storekit_error(convert_storekit_error(error),error.localizedDescription))
         } catch {
             purchase_processed(request, IosIapPurchaseResponse.error(error.localizedDescription))
         }
@@ -187,6 +191,30 @@ func convert_product(_ product: (Product)) async throws -> IosIapProduct {
     }
     
     return rust_product
+}
+
+public func convert_purchase_error(_ error: (Product.PurchaseError)) -> IosIapPurchaseError {
+    return switch error {
+    case .invalidQuantity: IosIapPurchaseError.invalid_quantity()
+    case .productUnavailable: IosIapPurchaseError.product_unavailable()
+    case .purchaseNotAllowed: IosIapPurchaseError.purchase_not_allowed()
+    case .ineligibleForOffer: IosIapPurchaseError.ineligible_for_offer()
+    case .invalidOfferIdentifier: IosIapPurchaseError.invalid_offer_identifier()
+    case .invalidOfferPrice: IosIapPurchaseError.invalid_offer_price()
+    case .invalidOfferSignature: IosIapPurchaseError.invalid_offer_signature()
+    case .missingOfferParameters: IosIapPurchaseError.missing_offer_parameters()
+    }
+}
+
+public func convert_storekit_error(_ error: (StoreKitError)) -> IosIapStoreKitError {
+    return switch error {
+    case .unknown: IosIapStoreKitError.unknown()
+    case .userCancelled: IosIapStoreKitError.user_cancelled()
+    case .networkError(let e): IosIapStoreKitError.network_error(e.localizedDescription)
+    case .systemError(let e): IosIapStoreKitError.system_error(e.localizedDescription)
+    case .notAvailableInStorefront: IosIapStoreKitError.not_available_in_storefront()
+    case .notEntitled: IosIapStoreKitError.not_entitled()
+    }
 }
 
 public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTransaction {

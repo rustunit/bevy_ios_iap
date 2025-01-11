@@ -169,6 +169,30 @@ void* __swift_bridge__$Vec_IosIapTransaction$get_mut(void* vec_ptr, uintptr_t in
 uintptr_t __swift_bridge__$Vec_IosIapTransaction$len(void* vec_ptr);
 void* __swift_bridge__$Vec_IosIapTransaction$as_ptr(void* vec_ptr);
 
+typedef struct IosIapStoreKitError IosIapStoreKitError;
+void __swift_bridge__$IosIapStoreKitError$_free(void* self);
+
+void* __swift_bridge__$Vec_IosIapStoreKitError$new(void);
+void __swift_bridge__$Vec_IosIapStoreKitError$drop(void* vec_ptr);
+void __swift_bridge__$Vec_IosIapStoreKitError$push(void* vec_ptr, void* item_ptr);
+void* __swift_bridge__$Vec_IosIapStoreKitError$pop(void* vec_ptr);
+void* __swift_bridge__$Vec_IosIapStoreKitError$get(void* vec_ptr, uintptr_t index);
+void* __swift_bridge__$Vec_IosIapStoreKitError$get_mut(void* vec_ptr, uintptr_t index);
+uintptr_t __swift_bridge__$Vec_IosIapStoreKitError$len(void* vec_ptr);
+void* __swift_bridge__$Vec_IosIapStoreKitError$as_ptr(void* vec_ptr);
+
+typedef struct IosIapPurchaseError IosIapPurchaseError;
+void __swift_bridge__$IosIapPurchaseError$_free(void* self);
+
+void* __swift_bridge__$Vec_IosIapPurchaseError$new(void);
+void __swift_bridge__$Vec_IosIapPurchaseError$drop(void* vec_ptr);
+void __swift_bridge__$Vec_IosIapPurchaseError$push(void* vec_ptr, void* item_ptr);
+void* __swift_bridge__$Vec_IosIapPurchaseError$pop(void* vec_ptr);
+void* __swift_bridge__$Vec_IosIapPurchaseError$get(void* vec_ptr, uintptr_t index);
+void* __swift_bridge__$Vec_IosIapPurchaseError$get_mut(void* vec_ptr, uintptr_t index);
+uintptr_t __swift_bridge__$Vec_IosIapPurchaseError$len(void* vec_ptr);
+void* __swift_bridge__$Vec_IosIapPurchaseError$as_ptr(void* vec_ptr);
+
 typedef struct IosIapPurchaseResponse IosIapPurchaseResponse;
 void __swift_bridge__$IosIapPurchaseResponse$_free(void* self);
 
@@ -215,6 +239,22 @@ void* __swift_bridge__$IosIapPurchaseResponse$canceled(void* id);
 void* __swift_bridge__$IosIapPurchaseResponse$pending(void* id);
 void* __swift_bridge__$IosIapPurchaseResponse$unknown(void* id);
 void* __swift_bridge__$IosIapPurchaseResponse$error(void* e);
+void* __swift_bridge__$IosIapPurchaseResponse$purchase_error(void* error, void* localized_description);
+void* __swift_bridge__$IosIapPurchaseResponse$storekit_error(void* error, void* localized_description);
+void* __swift_bridge__$IosIapPurchaseError$invalid_quantity(void);
+void* __swift_bridge__$IosIapPurchaseError$product_unavailable(void);
+void* __swift_bridge__$IosIapPurchaseError$purchase_not_allowed(void);
+void* __swift_bridge__$IosIapPurchaseError$ineligible_for_offer(void);
+void* __swift_bridge__$IosIapPurchaseError$invalid_offer_identifier(void);
+void* __swift_bridge__$IosIapPurchaseError$invalid_offer_price(void);
+void* __swift_bridge__$IosIapPurchaseError$invalid_offer_signature(void);
+void* __swift_bridge__$IosIapPurchaseError$missing_offer_parameters(void);
+void* __swift_bridge__$IosIapStoreKitError$unknown(void);
+void* __swift_bridge__$IosIapStoreKitError$user_cancelled(void);
+void* __swift_bridge__$IosIapStoreKitError$network_error(void* e);
+void* __swift_bridge__$IosIapStoreKitError$system_error(void* e);
+void* __swift_bridge__$IosIapStoreKitError$not_available_in_storefront(void);
+void* __swift_bridge__$IosIapStoreKitError$not_entitled(void);
 void* __swift_bridge__$IosIapEnvironment$sandbox(void);
 void* __swift_bridge__$IosIapEnvironment$production(void);
 void* __swift_bridge__$IosIapEnvironment$xcode(void);

@@ -5,14 +5,14 @@ use bevy_crossbeam_event::CrossbeamEventSender;
 #[allow(unused_imports)]
 pub use ffi::*;
 
-use crate::plugin::{IosIapEvents, IosIapResponse};
-use crate::transaction::IosIapTransaction;
 use crate::{
+    plugin::{IosIapEvents, IosIapResponse},
+    transaction::IosIapTransaction,
     IosIapCurrency, IosIapEnvironment, IosIapProduct, IosIapProductType, IosIapProductsResponse,
-    IosIapPurchaseResponse, IosIapRevocationReason, IosIapStorefront, IosIapSubscriptionInfo,
-    IosIapSubscriptionPeriod, IosIapSubscriptionPeriodUnit, IosIapSubscriptionRenewalState,
-    IosIapSubscriptionStatus, IosIapTransactionFinishResponse, IosIapTransactionReason,
-    IosIapTransactionResponse,
+    IosIapPurchaseError, IosIapPurchaseResponse, IosIapRevocationReason, IosIapStoreKitError,
+    IosIapStorefront, IosIapSubscriptionInfo, IosIapSubscriptionPeriod,
+    IosIapSubscriptionPeriodUnit, IosIapSubscriptionRenewalState, IosIapSubscriptionStatus,
+    IosIapTransactionFinishResponse, IosIapTransactionReason, IosIapTransactionResponse,
 };
 
 #[swift_bridge::bridge]
@@ -22,6 +22,8 @@ mod ffi {
         type IosIapProduct;
         type IosIapProductType;
         type IosIapPurchaseResponse;
+        type IosIapPurchaseError;
+        type IosIapStoreKitError;
         type IosIapTransaction;
         type IosIapTransactionReason;
         type IosIapEnvironment;
@@ -65,6 +67,46 @@ mod ffi {
         fn unknown(id: String) -> IosIapPurchaseResponse;
         #[swift_bridge(associated_to = IosIapPurchaseResponse)]
         fn error(e: String) -> IosIapPurchaseResponse;
+        #[swift_bridge(associated_to = IosIapPurchaseResponse)]
+        fn purchase_error(
+            error: IosIapPurchaseError,
+            localized_description: String,
+        ) -> IosIapPurchaseResponse;
+        #[swift_bridge(associated_to = IosIapPurchaseResponse)]
+        fn storekit_error(
+            error: IosIapStoreKitError,
+            localized_description: String,
+        ) -> IosIapPurchaseResponse;
+
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn invalid_quantity() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn product_unavailable() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn purchase_not_allowed() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn ineligible_for_offer() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn invalid_offer_identifier() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn invalid_offer_price() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn invalid_offer_signature() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn missing_offer_parameters() -> IosIapPurchaseError;
+
+        #[swift_bridge(associated_to = IosIapStoreKitError)]
+        fn unknown() -> IosIapStoreKitError;
+        #[swift_bridge(associated_to = IosIapStoreKitError)]
+        fn user_cancelled() -> IosIapStoreKitError;
+        #[swift_bridge(associated_to = IosIapStoreKitError)]
+        fn network_error(e: String) -> IosIapStoreKitError;
+        #[swift_bridge(associated_to = IosIapStoreKitError)]
+        fn system_error(e: String) -> IosIapStoreKitError;
+        #[swift_bridge(associated_to = IosIapStoreKitError)]
+        fn not_available_in_storefront() -> IosIapStoreKitError;
+        #[swift_bridge(associated_to = IosIapStoreKitError)]
+        fn not_entitled() -> IosIapStoreKitError;
 
         #[swift_bridge(associated_to = IosIapEnvironment)]
         fn sandbox() -> IosIapEnvironment;

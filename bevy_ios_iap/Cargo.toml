@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ios_iap"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 build = "build.rs"
 readme = "../README.md"
