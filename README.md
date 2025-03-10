@@ -86,7 +86,7 @@ fn bevy_system(mut iap: BevyIosIap) {
     bevy_ios_iap::init();
 
     // request product details, product IDs have to be explicitly provided
-    iap.products(vec!["com.rustunit.zoolitaire.levelunlock".into())])
+    iap.products(vec!["com.rustunit.zoolitaire.levelunlock".into()])
         .on_response(|trigger: Trigger<Products>| match &trigger.event().0 {
             IosIapProductsResponse::Done(products) => {
                 info!("products loaded: {}", products.len());
