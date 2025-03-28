@@ -265,10 +265,6 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
         IosIapTransaction.app_account_token(t, appAccountToken.uuidString)
     }
     
-    if let currencyCode = transaction.currencyCode {
-        IosIapTransaction.add_currency_code(t, currencyCode)
-    }
-    
     if let currency = transaction.currency {
         IosIapTransaction.add_currency(t, IosIapCurrency.new(currency.identifier, currency.isISOCurrency))
     }

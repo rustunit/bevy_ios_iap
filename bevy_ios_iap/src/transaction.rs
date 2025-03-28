@@ -29,7 +29,6 @@ pub struct IosIapTransaction {
     // pub reason: IosIapTransactionReason,
     pub environment: IosIapEnvironment,
     pub currency: Option<IosIapCurrency>,
-    pub currency_code: Option<String>,
     pub revocation_reason: Option<IosIapRevocationReason>,
     /// representing a UUID
     pub app_account_token: Option<String>,
@@ -82,7 +81,6 @@ impl IosIapTransaction {
             is_upgraded,
             environment,
             currency: None,
-            currency_code: None,
             original_id,
             revocation_reason: None,
             subscription_group_id: None,
@@ -100,10 +98,6 @@ impl IosIapTransaction {
 
     pub fn add_currency(t: &mut Self, currency: IosIapCurrency) {
         t.currency = Some(currency);
-    }
-
-    pub fn add_currency_code(t: &mut Self, code: String) {
-        t.currency_code = Some(code);
     }
 
     pub fn revocation_reason(t: &mut Self, reason: IosIapRevocationReason) {

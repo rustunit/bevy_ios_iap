@@ -1178,10 +1178,6 @@ extension IosIapTransaction {
         __swift_bridge__$IosIapTransaction$add_currency(t.ptr, {currency.isOwned = false; return currency.ptr;}())
     }
 
-    class public func add_currency_code<GenericIntoRustString: IntoRustString>(_ t: IosIapTransactionRefMut, _ code: GenericIntoRustString) {
-        __swift_bridge__$IosIapTransaction$add_currency_code(t.ptr, { let rustString = code.intoRustString(); rustString.isOwned = false; return rustString.ptr }())
-    }
-
     class public func revocation_reason(_ t: IosIapTransactionRefMut, _ reason: IosIapRevocationReason) {
         __swift_bridge__$IosIapTransaction$revocation_reason(t.ptr, {reason.isOwned = false; return reason.ptr;}())
     }

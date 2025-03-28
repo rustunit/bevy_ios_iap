@@ -141,8 +141,6 @@ mod ffi {
         #[swift_bridge(associated_to = IosIapTransaction)]
         fn add_currency(t: &mut IosIapTransaction, currency: IosIapCurrency);
         #[swift_bridge(associated_to = IosIapTransaction)]
-        fn add_currency_code(t: &mut IosIapTransaction, code: String);
-        #[swift_bridge(associated_to = IosIapTransaction)]
         fn revocation_reason(t: &mut IosIapTransaction, reason: IosIapRevocationReason);
         #[swift_bridge(associated_to = IosIapTransaction)]
         fn web_order_line_item_id(t: &mut IosIapTransaction, id: String);

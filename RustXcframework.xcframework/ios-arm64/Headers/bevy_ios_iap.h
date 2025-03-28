@@ -263,7 +263,6 @@ void* __swift_bridge__$IosIapTransaction$new_transaction(uint64_t id, void* prod
 void __swift_bridge__$IosIapTransaction$add_revocation(void* t, uint64_t date);
 void __swift_bridge__$IosIapTransaction$add_expiration(void* t, uint64_t date);
 void __swift_bridge__$IosIapTransaction$add_currency(void* t, void* currency);
-void __swift_bridge__$IosIapTransaction$add_currency_code(void* t, void* code);
 void __swift_bridge__$IosIapTransaction$revocation_reason(void* t, void* reason);
 void __swift_bridge__$IosIapTransaction$web_order_line_item_id(void* t, void* id);
 void __swift_bridge__$IosIapTransaction$subscription_group_id(void* t, void* id);
