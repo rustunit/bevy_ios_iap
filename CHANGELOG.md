@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+* make `Transaction` `reason` and `storefront` available only ios `17.0` or up
+* make package minimum ios `16.0`
+* remove `currency_code` as it was deprecated in iOS `16.0`
 
 ## [0.5.2] - 2024-01-11
 

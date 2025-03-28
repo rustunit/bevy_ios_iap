@@ -260,6 +260,8 @@ void* __swift_bridge__$IosIapEnvironment$production(void);
 void* __swift_bridge__$IosIapEnvironment$xcode(void);
 void* __swift_bridge__$IosIapStorefront$storefront(void* id, void* country_code);
 void* __swift_bridge__$IosIapTransaction$new_transaction(uint64_t id, void* product_id, void* app_bundle_id, uint64_t purchase_date, uint64_t original_purchase_date, int32_t purchased_quantity, void* storefront_country_code, uint64_t signed_date, bool is_upgraded, uint64_t original_id, void* json_representation, void* product_type, void* environment);
+void __swift_bridge__$IosIapTransaction$add_storefront(void* t, void* store);
+void __swift_bridge__$IosIapTransaction$add_reason(void* t, void* reason);
 void __swift_bridge__$IosIapTransaction$add_revocation(void* t, uint64_t date);
 void __swift_bridge__$IosIapTransaction$add_expiration(void* t, uint64_t date);
 void __swift_bridge__$IosIapTransaction$add_currency(void* t, void* currency);

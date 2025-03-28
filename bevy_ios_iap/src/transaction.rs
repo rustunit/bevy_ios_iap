@@ -3,6 +3,16 @@ use crate::{
     IosIapTransactionReason,
 };
 
+/// Marks a iOS version dependant value. If it is set then the device supports minimum iOS 17.
+/// Not using `Option` here to be explicit about the cause for a missing value and to handle it with caution.
+#[derive(Debug, Clone, Copy)]
+pub enum Ios17Dependant<T> {
+    /// The value is available on iOS 17.0 and later.
+    Available(T),
+    /// The value is not available on iOS 17.0 and later.
+    NotAvailable,
+}
+
 /// Representation of a Transaction.
 /// Mirrors the Transcation type in Apple's StoreKit2 closely.
 /// See official docs for more details on the individual fields.
@@ -24,9 +34,8 @@ pub struct IosIapTransaction {
     pub is_upgraded: bool,
     pub json_representation: String,
     pub product_type: IosIapProductType,
-    // TODO: figure out how to handle these that are only available iOS >=17.0
-    // pub storefront: IosIapStorefront,
-    // pub reason: IosIapTransactionReason,
+    pub storefront: Ios17Dependant<IosIapStorefront>,
+    pub reason: Ios17Dependant<IosIapTransactionReason>,
     pub environment: IosIapEnvironment,
     pub currency: Option<IosIapCurrency>,
     pub revocation_reason: Option<IosIapRevocationReason>,
@@ -85,7 +94,17 @@ impl IosIapTransaction {
             revocation_reason: None,
             subscription_group_id: None,
             web_order_line_item_id: None,
+            storefront: Ios17Dependant::NotAvailable,
+            reason: Ios17Dependant::NotAvailable,
         }
+    }
+
+    pub fn add_storefront(t: &mut Self, store: IosIapStorefront) {
+        t.storefront = Ios17Dependant::Available(store);
+    }
+
+    pub fn add_reason(t: &mut Self, reason: IosIapTransactionReason) {
+        t.reason = Ios17Dependant::Available(reason);
     }
 
     pub fn add_revocation(t: &mut Self, date: u64) {

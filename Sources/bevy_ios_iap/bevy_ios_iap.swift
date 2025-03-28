@@ -1166,6 +1166,14 @@ extension IosIapTransaction {
         IosIapTransaction(ptr: __swift_bridge__$IosIapTransaction$new_transaction(id, { let rustString = product_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), { let rustString = app_bundle_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), purchase_date, original_purchase_date, purchased_quantity, { let rustString = storefront_country_code.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), signed_date, is_upgraded, original_id, { let rustString = json_representation.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), {product_type.isOwned = false; return product_type.ptr;}(), {environment.isOwned = false; return environment.ptr;}()))
     }
 
+    class public func add_storefront(_ t: IosIapTransactionRefMut, _ store: IosIapStorefront) {
+        __swift_bridge__$IosIapTransaction$add_storefront(t.ptr, {store.isOwned = false; return store.ptr;}())
+    }
+
+    class public func add_reason(_ t: IosIapTransactionRefMut, _ reason: IosIapTransactionReason) {
+        __swift_bridge__$IosIapTransaction$add_reason(t.ptr, {reason.isOwned = false; return reason.ptr;}())
+    }
+
     class public func add_revocation(_ t: IosIapTransactionRefMut, _ date: UInt64) {
         __swift_bridge__$IosIapTransaction$add_revocation(t.ptr, date)
     }

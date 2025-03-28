@@ -135,6 +135,10 @@ mod ffi {
             environment: IosIapEnvironment,
         ) -> IosIapTransaction;
         #[swift_bridge(associated_to = IosIapTransaction)]
+        fn add_storefront(t: &mut IosIapTransaction, store: IosIapStorefront);
+        #[swift_bridge(associated_to = IosIapTransaction)]
+        fn add_reason(t: &mut IosIapTransaction, reason: IosIapTransactionReason);
+        #[swift_bridge(associated_to = IosIapTransaction)]
         fn add_revocation(t: &mut IosIapTransaction, date: u64);
         #[swift_bridge(associated_to = IosIapTransaction)]
         fn add_expiration(t: &mut IosIapTransaction, date: u64);
