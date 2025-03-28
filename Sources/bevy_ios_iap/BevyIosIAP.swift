@@ -227,12 +227,14 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
     } else {
        IosIapProductType.new_auto_renewable()
     }
-
-    let reason = if transaction.reason == Transaction.Reason.purchase {
-       IosIapTransactionReason.purchase()
-    } else  {
-       IosIapTransactionReason.renewal()
-    }
+    
+    let jsonRepresentation = String(decoding: transaction.jsonRepresentation, as: UTF8.self)
+    
+//    let reason = if transaction.reason == Transaction.Reason.purchase {
+//       IosIapTransactionReason.purchase()
+//    } else  {
+//       IosIapTransactionReason.renewal()
+//    }
 
     let env = if transaction.environment == AppStore.Environment.xcode {
        IosIapEnvironment.xcode()
@@ -242,9 +244,7 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
        IosIapEnvironment.production()
     }
 
-    let store = IosIapStorefront.storefront(transaction.storefront.id, transaction.storefront.countryCode)
-    
-    let jsonRepresentation = String(decoding: transaction.jsonRepresentation, as: UTF8.self)
+//    let store = IosIapStorefront.storefront(transaction.storefront.id, transaction.storefront.countryCode)
 
     var t  = IosIapTransaction.new_transaction(
         transaction.id,
@@ -259,9 +259,7 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
         transaction.originalID,
         jsonRepresentation,
         type,
-        reason,
-        env,
-        store)
+        env)
     
     if let appAccountToken = transaction.appAccountToken {
         IosIapTransaction.app_account_token(t, appAccountToken.uuidString)

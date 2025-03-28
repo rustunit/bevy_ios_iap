@@ -24,9 +24,10 @@ pub struct IosIapTransaction {
     pub is_upgraded: bool,
     pub json_representation: String,
     pub product_type: IosIapProductType,
-    pub storefront: IosIapStorefront,
+    // TODO: figure out how to handle these that are only available iOS >=17.0
+    // pub storefront: IosIapStorefront,
+    // pub reason: IosIapTransactionReason,
     pub environment: IosIapEnvironment,
-    pub reason: IosIapTransactionReason,
     pub currency: Option<IosIapCurrency>,
     pub currency_code: Option<String>,
     pub revocation_reason: Option<IosIapRevocationReason>,
@@ -62,9 +63,7 @@ impl IosIapTransaction {
         original_id: u64,
         json_representation: String,
         product_type: IosIapProductType,
-        reason: IosIapTransactionReason,
         environment: IosIapEnvironment,
-        storefront: IosIapStorefront,
     ) -> Self {
         Self {
             id,
@@ -75,7 +74,6 @@ impl IosIapTransaction {
             purchased_quantity,
             storefront_country_code,
             signed_date,
-            reason,
             app_account_token: None,
             json_representation,
             product_type,
@@ -83,7 +81,6 @@ impl IosIapTransaction {
             expiration_date: None,
             is_upgraded,
             environment,
-            storefront,
             currency: None,
             currency_code: None,
             original_id,

@@ -132,9 +132,7 @@ mod ffi {
             original_id: u64,
             json_representation: String,
             product_type: IosIapProductType,
-            reason: IosIapTransactionReason,
             environment: IosIapEnvironment,
-            storefront: IosIapStorefront,
         ) -> IosIapTransaction;
         #[swift_bridge(associated_to = IosIapTransaction)]
         fn add_revocation(t: &mut IosIapTransaction, date: u64);
