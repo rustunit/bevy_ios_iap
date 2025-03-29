@@ -203,6 +203,9 @@ fn ios_iap_ui(ui: &mut egui::Ui, res: &mut ResMut<DebugIosIap>) {
                     ui.heading("id");
                 });
                 header.col(|ui| {
+                    ui.heading("reason (iOS 17+)");
+                });
+                header.col(|ui| {
                     ui.heading("product");
                 });
                 header.col(|ui| {
@@ -214,6 +217,9 @@ fn ios_iap_ui(ui: &mut egui::Ui, res: &mut ResMut<DebugIosIap>) {
                     body.row(30.0, |mut row| {
                         row.col(|ui| {
                             ui.label(p.id.to_string());
+                        });
+                        row.col(|ui| {
+                            ui.label(format!("{:?}", p.reason));
                         });
                         row.col(|ui| {
                             ui.label(p.product_id.clone());
