@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.6.0] - 2024-03-30
+
 ### Changed
 * make `Transaction` `reason` and `storefront` available only ios `17.0` or up
+* introduce `Ios17Specific` Option-like that forces users to handle the fact that these values are only available on iOS 17 or up
 * make package iOS `16.0` compatible
 * remove `currency_code` as it was deprecated in iOS `16.0`
 
