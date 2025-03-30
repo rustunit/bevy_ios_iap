@@ -1162,8 +1162,16 @@ public class IosIapTransaction: IosIapTransactionRefMut {
     }
 }
 extension IosIapTransaction {
-    class public func new_transaction<GenericIntoRustString: IntoRustString>(_ id: UInt64, _ product_id: GenericIntoRustString, _ app_bundle_id: GenericIntoRustString, _ purchase_date: UInt64, _ original_purchase_date: UInt64, _ purchased_quantity: Int32, _ storefront_country_code: GenericIntoRustString, _ signed_date: UInt64, _ is_upgraded: Bool, _ original_id: UInt64, _ json_representation: GenericIntoRustString, _ product_type: IosIapProductType, _ reason: IosIapTransactionReason, _ environment: IosIapEnvironment, _ storefront: IosIapStorefront) -> IosIapTransaction {
-        IosIapTransaction(ptr: __swift_bridge__$IosIapTransaction$new_transaction(id, { let rustString = product_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), { let rustString = app_bundle_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), purchase_date, original_purchase_date, purchased_quantity, { let rustString = storefront_country_code.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), signed_date, is_upgraded, original_id, { let rustString = json_representation.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), {product_type.isOwned = false; return product_type.ptr;}(), {reason.isOwned = false; return reason.ptr;}(), {environment.isOwned = false; return environment.ptr;}(), {storefront.isOwned = false; return storefront.ptr;}()))
+    class public func new_transaction<GenericIntoRustString: IntoRustString>(_ id: UInt64, _ product_id: GenericIntoRustString, _ app_bundle_id: GenericIntoRustString, _ purchase_date: UInt64, _ original_purchase_date: UInt64, _ purchased_quantity: Int32, _ storefront_country_code: GenericIntoRustString, _ signed_date: UInt64, _ is_upgraded: Bool, _ original_id: UInt64, _ json_representation: GenericIntoRustString, _ product_type: IosIapProductType, _ environment: IosIapEnvironment) -> IosIapTransaction {
+        IosIapTransaction(ptr: __swift_bridge__$IosIapTransaction$new_transaction(id, { let rustString = product_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), { let rustString = app_bundle_id.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), purchase_date, original_purchase_date, purchased_quantity, { let rustString = storefront_country_code.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), signed_date, is_upgraded, original_id, { let rustString = json_representation.intoRustString(); rustString.isOwned = false; return rustString.ptr }(), {product_type.isOwned = false; return product_type.ptr;}(), {environment.isOwned = false; return environment.ptr;}()))
+    }
+
+    class public func add_storefront(_ t: IosIapTransactionRefMut, _ store: IosIapStorefront) {
+        __swift_bridge__$IosIapTransaction$add_storefront(t.ptr, {store.isOwned = false; return store.ptr;}())
+    }
+
+    class public func add_reason(_ t: IosIapTransactionRefMut, _ reason: IosIapTransactionReason) {
+        __swift_bridge__$IosIapTransaction$add_reason(t.ptr, {reason.isOwned = false; return reason.ptr;}())
     }
 
     class public func add_revocation(_ t: IosIapTransactionRefMut, _ date: UInt64) {
@@ -1176,10 +1184,6 @@ extension IosIapTransaction {
 
     class public func add_currency(_ t: IosIapTransactionRefMut, _ currency: IosIapCurrency) {
         __swift_bridge__$IosIapTransaction$add_currency(t.ptr, {currency.isOwned = false; return currency.ptr;}())
-    }
-
-    class public func add_currency_code<GenericIntoRustString: IntoRustString>(_ t: IosIapTransactionRefMut, _ code: GenericIntoRustString) {
-        __swift_bridge__$IosIapTransaction$add_currency_code(t.ptr, { let rustString = code.intoRustString(); rustString.isOwned = false; return rustString.ptr }())
     }
 
     class public func revocation_reason(_ t: IosIapTransactionRefMut, _ reason: IosIapRevocationReason) {

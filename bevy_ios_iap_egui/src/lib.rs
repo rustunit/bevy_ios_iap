@@ -203,7 +203,7 @@ fn ios_iap_ui(ui: &mut egui::Ui, res: &mut ResMut<DebugIosIap>) {
                     ui.heading("id");
                 });
                 header.col(|ui| {
-                    ui.heading("reason");
+                    ui.heading("reason (iOS 17+)");
                 });
                 header.col(|ui| {
                     ui.heading("product");

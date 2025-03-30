@@ -3,6 +3,16 @@ use crate::{
     IosIapTransactionReason,
 };
 
+/// Marks an iOS 17 version dependant value. If it is set then the device supports minimum iOS 17.
+/// Not using `Option` here to be explicit about the cause for a missing value and to handle it with caution.
+#[derive(Debug, Clone, Copy)]
+pub enum Ios17Specific<T> {
+    /// The value is available on iOS 17.0 and later.
+    Available(T),
+    /// The value is not available on iOS 17.0 and later.
+    NotAvailable,
+}
+
 /// Representation of a Transaction.
 /// Mirrors the Transcation type in Apple's StoreKit2 closely.
 /// See official docs for more details on the individual fields.
@@ -24,11 +34,10 @@ pub struct IosIapTransaction {
     pub is_upgraded: bool,
     pub json_representation: String,
     pub product_type: IosIapProductType,
-    pub storefront: IosIapStorefront,
+    pub storefront: Ios17Specific<IosIapStorefront>,
+    pub reason: Ios17Specific<IosIapTransactionReason>,
     pub environment: IosIapEnvironment,
-    pub reason: IosIapTransactionReason,
     pub currency: Option<IosIapCurrency>,
-    pub currency_code: Option<String>,
     pub revocation_reason: Option<IosIapRevocationReason>,
     /// representing a UUID
     pub app_account_token: Option<String>,
@@ -62,9 +71,7 @@ impl IosIapTransaction {
         original_id: u64,
         json_representation: String,
         product_type: IosIapProductType,
-        reason: IosIapTransactionReason,
         environment: IosIapEnvironment,
-        storefront: IosIapStorefront,
     ) -> Self {
         Self {
             id,
@@ -75,7 +82,6 @@ impl IosIapTransaction {
             purchased_quantity,
             storefront_country_code,
             signed_date,
-            reason,
             app_account_token: None,
             json_representation,
             product_type,
@@ -83,14 +89,22 @@ impl IosIapTransaction {
             expiration_date: None,
             is_upgraded,
             environment,
-            storefront,
             currency: None,
-            currency_code: None,
             original_id,
             revocation_reason: None,
             subscription_group_id: None,
             web_order_line_item_id: None,
+            storefront: Ios17Specific::NotAvailable,
+            reason: Ios17Specific::NotAvailable,
         }
+    }
+
+    pub fn add_storefront(t: &mut Self, store: IosIapStorefront) {
+        t.storefront = Ios17Specific::Available(store);
+    }
+
+    pub fn add_reason(t: &mut Self, reason: IosIapTransactionReason) {
+        t.reason = Ios17Specific::Available(reason);
     }
 
     pub fn add_revocation(t: &mut Self, date: u64) {
@@ -103,10 +117,6 @@ impl IosIapTransaction {
 
     pub fn add_currency(t: &mut Self, currency: IosIapCurrency) {
         t.currency = Some(currency);
-    }
-
-    pub fn add_currency_code(t: &mut Self, code: String) {
-        t.currency_code = Some(code);
     }
 
     pub fn revocation_reason(t: &mut Self, reason: IosIapRevocationReason) {

@@ -134,6 +134,13 @@ fn process_iap_events(
 }
 ```
 
+## Local development
+
+1. Build locally via `just build`
+2. Change the `Package.swift` to use the locally built `xcframework`
+3. Switch XCode package dependency to use local repo via path
+4. Patch `Cargo.toml` to use local repository
+
 ## Our Other Crates
 
 - [bevy_debug_log](https://github.com/rustunit/bevy_debug_log)

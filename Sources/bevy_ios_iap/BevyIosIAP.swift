@@ -227,12 +227,8 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
     } else {
        IosIapProductType.new_auto_renewable()
     }
-
-    let reason = if transaction.reason == Transaction.Reason.purchase {
-       IosIapTransactionReason.purchase()
-    } else  {
-       IosIapTransactionReason.renewal()
-    }
+    
+    let jsonRepresentation = String(decoding: transaction.jsonRepresentation, as: UTF8.self)
 
     let env = if transaction.environment == AppStore.Environment.xcode {
        IosIapEnvironment.xcode()
@@ -241,10 +237,6 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
     } else {
        IosIapEnvironment.production()
     }
-
-    let store = IosIapStorefront.storefront(transaction.storefront.id, transaction.storefront.countryCode)
-    
-    let jsonRepresentation = String(decoding: transaction.jsonRepresentation, as: UTF8.self)
 
     var t  = IosIapTransaction.new_transaction(
         transaction.id,
@@ -259,16 +251,24 @@ public func convert_transaction(_ transaction: (Transaction)) throws -> IosIapTr
         transaction.originalID,
         jsonRepresentation,
         type,
-        reason,
-        env,
-        store)
+        env)
+    
+    if #available(iOS 17.0, *) {
+        let store = IosIapStorefront.storefront(transaction.storefront.id, transaction.storefront.countryCode)
+        
+        IosIapTransaction.add_storefront(t, store)
+        
+        let reason = if transaction.reason == Transaction.Reason.purchase {
+           IosIapTransactionReason.purchase()
+        } else  {
+           IosIapTransactionReason.renewal()
+        }
+        
+        IosIapTransaction.add_reason(t, reason)
+    }
     
     if let appAccountToken = transaction.appAccountToken {
         IosIapTransaction.app_account_token(t, appAccountToken.uuidString)
-    }
-    
-    if let currencyCode = transaction.currencyCode {
-        IosIapTransaction.add_currency_code(t, currencyCode)
     }
     
     if let currency = transaction.currency {
