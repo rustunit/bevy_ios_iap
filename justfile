@@ -1,5 +1,5 @@
 check:
-	cd ./bevy_ios_iap/ && cargo c --target=aarch64-apple-ios-sim
+	cd ./bevy_ios_iap/ && just check
 
 build-rust-release:
 	./bevy_ios_iap/build-rust-release.sh

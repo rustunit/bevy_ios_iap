@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * upgrade to bevy `0.16`
+* temporarily disabled ios-sim support until rust-bindgen [releases](https://github.com/rust-lang/rust-bindgen/issues/3181)
 
 ## [0.6.0] - 2025-03-30
 

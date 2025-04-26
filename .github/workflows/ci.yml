@@ -12,72 +12,73 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
 
-    - name: Add iOS targets
-      run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
+      - name: Add iOS targets
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
-    - name: Rust Cache
-      uses: Swatinem/rust-cache@v2
-      with:
-        workspaces: "./bevy_ios_iap"
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./bevy_ios_iap"
 
-    - name: Check iOS Sim
-      run: |
-        cd bevy_ios_iap
-        cargo c --target=aarch64-apple-ios-sim
-        cargo b --target=aarch64-apple-ios-sim
-        cargo clippy --target=aarch64-apple-ios-sim
+      # TODO: enable once https://github.com/rust-lang/rust-bindgen/issues/3181 is released
+      # - name: Check iOS Sim
+      #   run: |
+      #     cd bevy_ios_iap
+      #     cargo c --target=aarch64-apple-ios-sim
+      #     cargo b --target=aarch64-apple-ios-sim
+      #     cargo clippy --target=aarch64-apple-ios-sim
 
-    - name: Check iOS
-      run: |
-        cd bevy_ios_iap
-        cargo c --target=aarch64-apple-ios
-        cargo b --target=aarch64-apple-ios
-        cargo clippy --target=aarch64-apple-ios
-    
-    - name: Check MacOs
-      run: |
-        cd bevy_ios_iap
-        cargo c
-        cargo b
-        cargo clippy
-        cargo t
+      - name: Check iOS
+        run: |
+          cd bevy_ios_iap
+          cargo c --target=aarch64-apple-ios
+          cargo b --target=aarch64-apple-ios
+          cargo clippy --target=aarch64-apple-ios
+
+      - name: Check MacOs
+        run: |
+          cd bevy_ios_iap
+          cargo c
+          cargo b
+          cargo clippy
+          cargo t
 
   build_egui:
     runs-on: macos-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
 
-    - name: Add iOS targets
-      run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
+      - name: Add iOS targets
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
 
-    - name: Rust Cache
-      uses: Swatinem/rust-cache@v2
-      with:
-        workspaces: "./bevy_ios_iap_egui"
+      - name: Rust Cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./bevy_ios_iap_egui"
 
-    - name: Check iOS Sim
-      run: |
-        cd bevy_ios_iap_egui
-        cargo c --target=aarch64-apple-ios-sim
-        cargo b --target=aarch64-apple-ios-sim
-        cargo clippy --target=aarch64-apple-ios-sim
+      - name: Check iOS Sim
+        run: |
+          cd bevy_ios_iap_egui
+          cargo c --target=aarch64-apple-ios-sim
+          cargo b --target=aarch64-apple-ios-sim
+          cargo clippy --target=aarch64-apple-ios-sim
 
-    - name: Check iOS
-      run: |
-        cd bevy_ios_iap_egui
-        cargo c --target=aarch64-apple-ios
-        cargo b --target=aarch64-apple-ios
-        cargo clippy --target=aarch64-apple-ios
-    
-    - name: Check MacOs
-      run: |
-        cd bevy_ios_iap_egui
-        cargo c
-        cargo b
-        cargo clippy
-        cargo t
+      - name: Check iOS
+        run: |
+          cd bevy_ios_iap_egui
+          cargo c --target=aarch64-apple-ios
+          cargo b --target=aarch64-apple-ios
+          cargo clippy --target=aarch64-apple-ios
+
+      - name: Check MacOs
+        run: |
+          cd bevy_ios_iap_egui
+          cargo c
+          cargo b
+          cargo clippy
+          cargo t
