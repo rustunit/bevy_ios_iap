@@ -18,9 +18,10 @@ let package = Package(
         .binaryTarget(
             name: "RustXcframework",
             //for local development:
-            path: "RustXcframework.xcframework"),
-        //url: "https://github.com/rustunit/bevy_ios_iap/releases/download/rs-0.6.0/RustXcframework.xcframework.zip",
-        //checksum: "ce0261d0fda41b2108b9f34bd2235f0e245c6b666a1921615a24a8a61fa41f1e"),
+            //path: "RustXcframework.xcframework"),
+            url:
+                "https://github.com/rustunit/bevy_ios_iap/releases/download/rs-0.7.0/RustXcframework.xcframework.zip",
+            checksum: "ea7396a6950199a7a25d5d8f35d220c1e3b9052e9bb9c207785c1bd8addb85e9"),
         .target(
             name: "bevy_ios_iap",
             dependencies: ["RustXcframework"]),
