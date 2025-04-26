@@ -7,8 +7,8 @@ use bevy_ecs::{
 };
 
 use crate::{
-    plugin::IosIapResponse, IosIapProductsResponse, IosIapPurchaseResponse,
-    IosIapTransactionFinishResponse, IosIapTransactionResponse,
+    IosIapProductsResponse, IosIapPurchaseResponse, IosIapTransactionFinishResponse,
+    IosIapTransactionResponse, plugin::IosIapResponse,
 };
 
 #[derive(Event, Debug)]
@@ -63,7 +63,7 @@ pub struct BevyIosIap<'w, 's> {
     res: ResMut<'w, BevyIosIapSate>,
 }
 
-impl<'w, 's> BevyIosIap<'w, 's> {
+impl BevyIosIap<'_, '_> {
     pub fn current_entitlements(&mut self) -> BevyIosIapRequestBuilder<'_, CurrentEntitlements> {
         let id = self.res.request_id;
         self.res.request_id += 1;
@@ -163,7 +163,7 @@ fn cleanup_finished_requests(
     query: Query<Entity, (With<RequestEntity>, Without<RequestId>)>,
 ) {
     for e in query.iter() {
-        if let Some(mut ec) = commands.get_entity(e) {
+        if let Ok(mut ec) = commands.get_entity(e) {
             ec.despawn();
         }
     }
@@ -183,7 +183,7 @@ fn process_events(
                 for (e, id) in &query_current_entitlements {
                     if id.0 == *r {
                         commands.trigger_targets(CurrentEntitlements(response.clone()), e);
-                        if let Some(mut ec) = commands.get_entity(e) {
+                        if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
                         break;
@@ -194,7 +194,7 @@ fn process_events(
                 for (e, id) in &query_products {
                     if id.0 == *r {
                         commands.trigger_targets(Products(response.clone()), e);
-                        if let Some(mut ec) = commands.get_entity(e) {
+                        if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
                         break;
@@ -205,7 +205,7 @@ fn process_events(
                 for (e, id) in &query_purchases {
                     if id.0 == *r {
                         commands.trigger_targets(Purchase(response.clone()), e);
-                        if let Some(mut ec) = commands.get_entity(e) {
+                        if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
                         break;
@@ -216,7 +216,7 @@ fn process_events(
                 for (e, id) in &query_purchases {
                     if id.0 == *r {
                         commands.trigger_targets(FinishTransaction(response.clone()), e);
-                        if let Some(mut ec) = commands.get_entity(e) {
+                        if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
                         break;
@@ -227,7 +227,7 @@ fn process_events(
                 for (e, id) in &query_purchases {
                     if id.0 == *r {
                         commands.trigger_targets(AllTransactions(response.clone()), e);
-                        if let Some(mut ec) = commands.get_entity(e) {
+                        if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
                         break;

@@ -33,7 +33,9 @@ pub struct IosIapEguiPlugin {
 impl Plugin for IosIapEguiPlugin {
     fn build(&self, app: &mut App) {
         if !app.is_plugin_added::<EguiPlugin>() {
-            app.add_plugins(EguiPlugin);
+            app.add_plugins(EguiPlugin {
+                enable_multipass_for_primary_context: false,
+            });
         }
 
         app.init_resource::<DebugUiResource>();

@@ -40,6 +40,7 @@ impl IosIapTransactionResponse {
 ///
 /// See Event [`IosIapEvents`]
 #[derive(Debug, Clone)]
+#[allow(clippy::large_enum_variant)]
 pub enum IosIapTransactionFinishResponse {
     /// Unknown Unfinished Transaction, maybe a concurrent process to finish it in the meantime?
     UnknownTransaction(u64),
@@ -66,6 +67,7 @@ impl IosIapTransactionFinishResponse {
 ///
 /// See Event [`IosIapEvents`]
 #[derive(Debug, Clone)]
+#[allow(clippy::large_enum_variant)]
 pub enum IosIapPurchaseResponse {
     /// Purchase successful
     Success(IosIapTransaction),

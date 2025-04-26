@@ -214,6 +214,9 @@ public func convert_storekit_error(_ error: (StoreKitError)) -> IosIapStoreKitEr
     case .systemError(let e): IosIapStoreKitError.system_error(e.localizedDescription)
     case .notAvailableInStorefront: IosIapStoreKitError.not_available_in_storefront()
     case .notEntitled: IosIapStoreKitError.not_entitled()
+    
+    @unknown default:
+        IosIapStoreKitError.unknown()
     }
 }
 

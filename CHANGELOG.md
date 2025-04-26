@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## [0.6.0] - 2024-03-30
+## [0.7.0] - 2025-04-26
+
+### Fixed
+* upgrade to bevy `0.16`
+* temporarily disabled ios-sim support until rust-bindgen [releases](https://github.com/rust-lang/rust-bindgen/issues/3181)
+
+## [0.6.0] - 2025-03-30
 
 ### Changed
 * make `Transaction` `reason` and `storefront` available only ios `17.0` or up
@@ -15,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * make package iOS `16.0` compatible
 * remove `currency_code` as it was deprecated in iOS `16.0`
 
-## [0.5.2] - 2024-01-11
+## [0.5.2] - 2025-01-11
 
 ### Added
 * add `IosIapPurchaseError` and `IosIapStoreKitError` to `IosIapPurchaseResponse` to provide programmatic error handling

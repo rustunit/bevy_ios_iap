@@ -58,6 +58,7 @@ pub struct IosIapTransaction {
 }
 
 impl IosIapTransaction {
+    #[allow(clippy::too_many_arguments)]
     pub fn new_transaction(
         id: u64,
         product_id: String,

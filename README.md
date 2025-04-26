@@ -51,7 +51,7 @@ It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-genera
 
 * Don't forget to configure your purchases like for any other iOS app, this guide will not focus on that, as it is the same no matter what engine you use. this guide focuses on setting things up in a bevy project.
 
-**Note:** 
+**Note:**
 The rust crate used must be **exactly** the same version as the Swift Package (for binary compatibility reasons).
 I suggest using a specific version (like `0.2.0` in the screenshot) to make sure to always use binary matching versions!
 
@@ -59,9 +59,9 @@ I suggest using a specific version (like `0.2.0` in the screenshot) to make sure
 
 ```
 cargo add bevy_ios_iap
-``` 
+```
 
-or 
+or
 
 ```toml
 # always pin to the same exact version you also of the Swift package
@@ -79,7 +79,7 @@ app.add_plugins(IosIapPlugin::new(true));
 
 ```rust
 fn bevy_system(mut iap: BevyIosIap) {
-    // If you set the plugin to manual init, this will register the 
+    // If you set the plugin to manual init, this will register the
     // TranscactionObserver to listen to updates to any Transactions and trigger
     // `IosIapEvents::Transaction` accordingly.
     // Note: this will require the user to be logged in into their apple-id and popup a login dialog if not
@@ -156,9 +156,10 @@ fn process_iap_events(
 
 ## Bevy version support
 
-|bevy|bevy\_ios\_iap|
+|bevy|crate|
 |---|---|
-|0.15|0.5,main|
+|0.16|0.6,main|
+|0.15|0.5|
 |0.14|0.3,0.4|
 |0.13|0.2|
 
