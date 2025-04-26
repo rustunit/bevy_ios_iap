@@ -1,3 +1,5 @@
+#![allow(clippy::unnecessary_cast)]
+
 use std::sync::OnceLock;
 
 use bevy_crossbeam_event::CrossbeamEventSender;
@@ -6,13 +8,13 @@ use bevy_crossbeam_event::CrossbeamEventSender;
 pub use ffi::*;
 
 use crate::{
-    plugin::{IosIapEvents, IosIapResponse},
-    transaction::IosIapTransaction,
     IosIapCurrency, IosIapEnvironment, IosIapProduct, IosIapProductType, IosIapProductsResponse,
     IosIapPurchaseError, IosIapPurchaseResponse, IosIapRevocationReason, IosIapStoreKitError,
     IosIapStorefront, IosIapSubscriptionInfo, IosIapSubscriptionPeriod,
     IosIapSubscriptionPeriodUnit, IosIapSubscriptionRenewalState, IosIapSubscriptionStatus,
     IosIapTransactionFinishResponse, IosIapTransactionReason, IosIapTransactionResponse,
+    plugin::{IosIapEvents, IosIapResponse},
+    transaction::IosIapTransaction,
 };
 
 #[swift_bridge::bridge]
@@ -246,12 +248,12 @@ static SENDER_RESPONSE: OnceLock<Option<CrossbeamEventSender<IosIapResponse>>> =
 
 #[allow(dead_code)]
 pub fn set_sender_events(sender: CrossbeamEventSender<IosIapEvents>) {
-    while !SENDER_EVENTS.set(Some(sender.clone())).is_ok() {}
+    while SENDER_EVENTS.set(Some(sender.clone())).is_err() {}
 }
 
 #[allow(dead_code)]
 pub fn set_sender_response(sender: CrossbeamEventSender<IosIapResponse>) {
-    while !SENDER_RESPONSE.set(Some(sender.clone())).is_ok() {}
+    while SENDER_RESPONSE.set(Some(sender.clone())).is_err() {}
 }
 
 fn transaction_update(t: IosIapTransaction) {
