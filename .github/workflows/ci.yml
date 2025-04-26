@@ -61,12 +61,13 @@ jobs:
         with:
           workspaces: "./bevy_ios_iap_egui"
 
-      - name: Check iOS Sim
-        run: |
-          cd bevy_ios_iap_egui
-          cargo c --target=aarch64-apple-ios-sim
-          cargo b --target=aarch64-apple-ios-sim
-          cargo clippy --target=aarch64-apple-ios-sim
+      # TODO: enable once https://github.com/rust-lang/rust-bindgen/issues/3181 is released
+      # - name: Check iOS Sim
+      #   run: |
+      #     cd bevy_ios_iap_egui
+      #     cargo c --target=aarch64-apple-ios-sim
+      #     cargo b --target=aarch64-apple-ios-sim
+      #     cargo clippy --target=aarch64-apple-ios-sim
 
       - name: Check iOS
         run: |

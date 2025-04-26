@@ -1,5 +1,6 @@
 check:
 	cd ./bevy_ios_iap/ && just check
+	cd ./bevy_ios_iap_egui/ && just check
 
 build-rust-release:
 	./bevy_ios_iap/build-rust-release.sh
