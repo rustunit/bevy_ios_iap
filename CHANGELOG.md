@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.6.1] - 2025-04-29
+
+### Changed
+* fix swift compiler error in xcode >= 16.3
+
 ## [0.6.0] - 2024-03-30
 
 ### Changed
