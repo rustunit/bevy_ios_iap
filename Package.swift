@@ -10,7 +10,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "bevy_ios_iap",
-            targets: ["bevy_ios_iap"]),
+            targets: ["bevy_ios_iap"])
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -19,8 +19,9 @@ let package = Package(
             name: "RustXcframework",
             // for local development:
             //    path: "RustXcframework.xcframework"),
-         url: "https://github.com/rustunit/bevy_ios_iap/releases/download/rs-0.6.0/RustXcframework.xcframework.zip",
-         checksum: "ce0261d0fda41b2108b9f34bd2235f0e245c6b666a1921615a24a8a61fa41f1e"),
+            url:
+                "https://github.com/rustunit/bevy_ios_iap/releases/download/rs-0.6.1/RustXcframework.xcframework.zip",
+            checksum: "8f000fb72c85661a2a12096fcd4f753f8cc29cedce9f91da69783b19d10b8d8c"),
         .target(
             name: "bevy_ios_iap",
             dependencies: ["RustXcframework"]),
