@@ -33,9 +33,7 @@ pub struct IosIapEguiPlugin {
 impl Plugin for IosIapEguiPlugin {
     fn build(&self, app: &mut App) {
         if !app.is_plugin_added::<EguiPlugin>() {
-            app.add_plugins(EguiPlugin {
-                enable_multipass_for_primary_context: false,
-            });
+            app.add_plugins(EguiPlugin::default());
         }
 
         app.init_resource::<DebugUiResource>();
@@ -49,15 +47,18 @@ impl Plugin for IosIapEguiPlugin {
         app.add_systems(Update, update);
         app.add_systems(
             Update,
-            process_iap_responses.run_if(on_event::<IosIapResponse>),
+            process_iap_responses.run_if(on_message::<IosIapResponse>),
         );
-        app.add_systems(Update, process_iap_events.run_if(on_event::<IosIapEvents>));
+        app.add_systems(
+            Update,
+            process_iap_events.run_if(on_message::<IosIapEvents>),
+        );
 
         app.add_observer(on_toggle);
     }
 }
 
-fn on_toggle(trigger: Trigger<IosIapEguiOpen>, mut res: ResMut<DebugUiResource>) {
+fn on_toggle(trigger: On<IosIapEguiOpen>, mut res: ResMut<DebugUiResource>) {
     match trigger.event() {
         IosIapEguiOpen::Toggle => res.open = !res.open,
         IosIapEguiOpen::Open => res.open = true,
@@ -65,7 +66,7 @@ fn on_toggle(trigger: Trigger<IosIapEguiOpen>, mut res: ResMut<DebugUiResource>)
     }
 }
 
-fn process_iap_responses(mut events: EventReader<IosIapResponse>, mut res: ResMut<DebugIosIap>) {
+fn process_iap_responses(mut events: MessageReader<IosIapResponse>, mut res: ResMut<DebugIosIap>) {
     for e in events.read() {
         match e {
             IosIapResponse::Products((_r, IosIapProductsResponse::Done(products))) => {
@@ -107,7 +108,7 @@ fn process_iap_responses(mut events: EventReader<IosIapResponse>, mut res: ResMu
     }
 }
 
-fn process_iap_events(mut events: EventReader<IosIapEvents>, mut res: ResMut<DebugIosIap>) {
+fn process_iap_events(mut events: MessageReader<IosIapEvents>, mut res: ResMut<DebugIosIap>) {
     for e in events.read() {
         match e {
             IosIapEvents::TransactionUpdate(t) => {
@@ -125,7 +126,7 @@ fn update(
     mut res_iap: ResMut<DebugIosIap>,
 ) {
     let mut open_state = res.open;
-    let Some(ctx) = contexts.try_ctx_mut() else {
+    let Ok(ctx) = contexts.ctx_mut() else {
         return;
     };
 

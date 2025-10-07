@@ -8,7 +8,7 @@ use crate::{
 };
 
 /// All possible responses for communication from the native iOS (Swift) side to Rust/Bevy as a reaction to a method call / request.
-#[derive(Event, Clone, Debug)]
+#[derive(Message, Clone, Debug)]
 pub enum IosIapResponse {
     /// Triggered by calls to [`get_products`][crate::get_products]
     Products((i64, IosIapProductsResponse)),
@@ -24,7 +24,7 @@ pub enum IosIapResponse {
 
 /// Events for pro-active communication from native iOS (Swift) side to Rust/Bevy that are not a direct response to a request.
 #[non_exhaustive]
-#[derive(Event, Clone, Debug)]
+#[derive(Message, Clone, Debug)]
 pub enum IosIapEvents {
     /// Triggered automatically by TransactionObserver registered by [`init`][crate::init]
     /// for every update on any Transaction while the app is running.
@@ -50,13 +50,13 @@ impl Plugin for IosIapPlugin {
 
         #[cfg(not(target_os = "ios"))]
         {
-            app.add_event::<IosIapEvents>();
-            app.add_event::<IosIapResponse>();
+            app.add_message::<IosIapEvents>();
+            app.add_message::<IosIapResponse>();
         }
 
         #[cfg(target_os = "ios")]
         {
-            use bevy_crossbeam_event::{CrossbeamEventApp, CrossbeamEventSender};
+            use bevy_channel_message::{CrossbeamEventApp, CrossbeamEventSender};
 
             app.add_crossbeam_event::<IosIapEvents>();
 

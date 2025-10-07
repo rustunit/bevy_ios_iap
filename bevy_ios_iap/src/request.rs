@@ -11,20 +11,35 @@ use crate::{
     IosIapTransactionResponse, plugin::IosIapResponse,
 };
 
-#[derive(Event, Debug)]
-pub struct CurrentEntitlements(pub IosIapTransactionResponse);
+#[derive(EntityEvent, Debug)]
+pub struct CurrentEntitlements {
+    pub entity: Entity,
+    pub response: IosIapTransactionResponse,
+}
 
-#[derive(Event, Debug)]
-pub struct Products(pub IosIapProductsResponse);
+#[derive(EntityEvent, Debug)]
+pub struct Products {
+    pub entity: Entity,
+    pub response: IosIapProductsResponse,
+}
 
-#[derive(Event, Debug)]
-pub struct Purchase(pub IosIapPurchaseResponse);
+#[derive(EntityEvent, Debug)]
+pub struct Purchase {
+    pub entity: Entity,
+    pub response: IosIapPurchaseResponse,
+}
 
-#[derive(Event, Debug)]
-pub struct FinishTransaction(pub IosIapTransactionFinishResponse);
+#[derive(EntityEvent, Debug)]
+pub struct FinishTransaction {
+    pub entity: Entity,
+    pub response: IosIapTransactionFinishResponse,
+}
 
-#[derive(Event, Debug)]
-pub struct AllTransactions(pub IosIapTransactionResponse);
+#[derive(EntityEvent, Debug)]
+pub struct AllTransactions {
+    pub entity: Entity,
+    pub response: IosIapTransactionResponse,
+}
 
 #[derive(Resource, Default)]
 struct BevyIosIapSate {
@@ -127,7 +142,7 @@ pub struct BevyIosIapRequestBuilder<'a, T>(EntityCommands<'a>, PhantomData<T>);
 
 impl<'a, T> BevyIosIapRequestBuilder<'a, T>
 where
-    T: 'static + Event,
+    T: 'static + Event + bevy_ecs::event::EntityEvent,
 {
     fn new(ec: EntityCommands<'a>) -> Self {
         Self(ec, PhantomData)
@@ -151,7 +166,7 @@ pub fn plugin(app: &mut App) {
         PreUpdate,
         (
             cleanup_finished_requests,
-            process_events.run_if(on_event::<IosIapResponse>),
+            process_events.run_if(on_message::<IosIapResponse>),
         )
             .chain()
             .in_set(BevyIosIapSet),
@@ -171,7 +186,7 @@ fn cleanup_finished_requests(
 
 #[allow(unused_variables, unused_mut)]
 fn process_events(
-    mut events: EventReader<IosIapResponse>,
+    mut events: MessageReader<IosIapResponse>,
     mut commands: Commands,
     query_current_entitlements: Query<(Entity, &RequestId), With<RequestCurrentEntitlements>>,
     query_products: Query<(Entity, &RequestId), With<RequestProducts>>,
@@ -182,7 +197,10 @@ fn process_events(
             IosIapResponse::CurrentEntitlements((r, response)) => {
                 for (e, id) in &query_current_entitlements {
                     if id.0 == *r {
-                        commands.trigger_targets(CurrentEntitlements(response.clone()), e);
+                        commands.trigger(CurrentEntitlements {
+                            entity: e,
+                            response: response.clone(),
+                        });
                         if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
@@ -193,7 +211,10 @@ fn process_events(
             IosIapResponse::Products((r, response)) => {
                 for (e, id) in &query_products {
                     if id.0 == *r {
-                        commands.trigger_targets(Products(response.clone()), e);
+                        commands.trigger(Products {
+                            entity: e,
+                            response: response.clone(),
+                        });
                         if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
@@ -204,7 +225,10 @@ fn process_events(
             IosIapResponse::Purchase((r, response)) => {
                 for (e, id) in &query_purchases {
                     if id.0 == *r {
-                        commands.trigger_targets(Purchase(response.clone()), e);
+                        commands.trigger(Purchase {
+                            entity: e,
+                            response: response.clone(),
+                        });
                         if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
@@ -215,7 +239,10 @@ fn process_events(
             IosIapResponse::TransactionFinished((r, response)) => {
                 for (e, id) in &query_purchases {
                     if id.0 == *r {
-                        commands.trigger_targets(FinishTransaction(response.clone()), e);
+                        commands.trigger(FinishTransaction {
+                            entity: e,
+                            response: response.clone(),
+                        });
                         if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }
@@ -226,7 +253,10 @@ fn process_events(
             IosIapResponse::AllTransactions((r, response)) => {
                 for (e, id) in &query_purchases {
                     if id.0 == *r {
-                        commands.trigger_targets(AllTransactions(response.clone()), e);
+                        commands.trigger(AllTransactions {
+                            entity: e,
+                            response: response.clone(),
+                        });
                         if let Ok(mut ec) = commands.get_entity(e) {
                             ec.remove::<RequestId>();
                         }

@@ -2,7 +2,7 @@
 
 use std::sync::OnceLock;
 
-use bevy_crossbeam_event::CrossbeamEventSender;
+use bevy_channel_message::CrossbeamEventSender;
 
 #[allow(unused_imports)]
 pub use ffi::*;
