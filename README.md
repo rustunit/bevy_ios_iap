@@ -87,7 +87,7 @@ fn bevy_system(mut iap: BevyIosIap) {
 
     // request product details, product IDs have to be explicitly provided
     iap.products(vec!["com.rustunit.zoolitaire.levelunlock".into()])
-        .on_response(|trigger: Trigger<Products>| match &trigger.event().0 {
+        .on_response(|trigger: On<Products>| match &trigger.event().0 {
             IosIapProductsResponse::Done(products) => {
                 info!("products loaded: {}", products.len());
 
@@ -100,7 +100,7 @@ fn bevy_system(mut iap: BevyIosIap) {
 
     // trigger a product purchase for a specific product ID
     iap.purchase("com.rustunit.zoolitaire.levelunlock".into())
-        .on_response(|trigger: Trigger<Purchase>|{
+        .on_response(|trigger: On<Purchase>|{
             match &trigger.event().0 {
                 IosIapPurchaseResponse::Success(t) => {
                     info!("just purchased: '{}' {}", t.product_id, t.id);
@@ -113,7 +113,7 @@ fn bevy_system(mut iap: BevyIosIap) {
 
     // request to restore active subscriptions and non-consumables
     iap.current_entitlements()
-        .on_response(|trigger: Trigger<CurrentEntitlements>|{
+        .on_response(|trigger: On<CurrentEntitlements>|{
             info!("current entitlements: {}", trigger.event());
         });
 }
