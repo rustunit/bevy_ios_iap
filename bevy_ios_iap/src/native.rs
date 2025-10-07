@@ -2,7 +2,7 @@
 
 use std::sync::OnceLock;
 
-use bevy_channel_message::CrossbeamEventSender;
+use bevy_channel_message::ChannelMessageSender;
 
 #[allow(unused_imports)]
 pub use ffi::*;
@@ -243,16 +243,16 @@ mod ffi {
     }
 }
 
-static SENDER_EVENTS: OnceLock<Option<CrossbeamEventSender<IosIapEvents>>> = OnceLock::new();
-static SENDER_RESPONSE: OnceLock<Option<CrossbeamEventSender<IosIapResponse>>> = OnceLock::new();
+static SENDER_EVENTS: OnceLock<Option<ChannelMessageSender<IosIapEvents>>> = OnceLock::new();
+static SENDER_RESPONSE: OnceLock<Option<ChannelMessageSender<IosIapResponse>>> = OnceLock::new();
 
 #[allow(dead_code)]
-pub fn set_sender_events(sender: CrossbeamEventSender<IosIapEvents>) {
+pub fn set_sender_events(sender: ChannelMessageSender<IosIapEvents>) {
     while SENDER_EVENTS.set(Some(sender.clone())).is_err() {}
 }
 
 #[allow(dead_code)]
-pub fn set_sender_response(sender: CrossbeamEventSender<IosIapResponse>) {
+pub fn set_sender_response(sender: ChannelMessageSender<IosIapResponse>) {
     while SENDER_RESPONSE.set(Some(sender.clone())).is_err() {}
 }
 

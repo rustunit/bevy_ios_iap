@@ -19,7 +19,7 @@ bevy_app = { version = "0.17", default-features = false }
 bevy_ecs = { version = "0.17", default-features = false }
 bevy_ecs_macros = { version = "0.17", default-features = false }
 bevy_log = { version = "0.17", default-features = false }
-bevy_channel_message = {path = "../../bevy_channel_message"}
+bevy_channel_message = "0.1.1"
 swift-bridge = "0.1"
 
 [build-dependencies]

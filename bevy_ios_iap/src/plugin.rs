@@ -56,23 +56,23 @@ impl Plugin for IosIapPlugin {
 
         #[cfg(target_os = "ios")]
         {
-            use bevy_channel_message::{CrossbeamEventApp, CrossbeamEventSender};
+            use bevy_channel_message::{ChannelMessageApp, ChannelMessageSender};
 
-            app.add_crossbeam_event::<IosIapEvents>();
+            app.add_channel_message::<IosIapEvents>();
 
             let sender = app
                 .world()
-                .get_resource::<CrossbeamEventSender<IosIapEvents>>()
+                .get_resource::<ChannelMessageSender<IosIapEvents>>()
                 .unwrap()
                 .clone();
 
             crate::native::set_sender_events(sender);
 
-            app.add_crossbeam_event::<IosIapResponse>();
+            app.add_channel_message::<IosIapResponse>();
 
             let sender = app
                 .world()
-                .get_resource::<CrossbeamEventSender<IosIapResponse>>()
+                .get_resource::<ChannelMessageSender<IosIapResponse>>()
                 .unwrap()
                 .clone();
 
