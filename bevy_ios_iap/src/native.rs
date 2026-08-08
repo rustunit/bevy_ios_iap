@@ -96,6 +96,8 @@ mod ffi {
         fn invalid_offer_signature() -> IosIapPurchaseError;
         #[swift_bridge(associated_to = IosIapPurchaseError)]
         fn missing_offer_parameters() -> IosIapPurchaseError;
+        #[swift_bridge(associated_to = IosIapPurchaseError)]
+        fn unknown_purchase_error() -> IosIapPurchaseError;
 
         #[swift_bridge(associated_to = IosIapStoreKitError)]
         fn unknown() -> IosIapStoreKitError;

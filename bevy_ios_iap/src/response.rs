@@ -147,6 +147,8 @@ pub enum IosIapPurchaseError {
     InvalidOfferPrice,
     InvalidOfferSignature,
     MissingOfferParameters,
+    /// A case StoreKit added that this version does not map yet
+    Unknown,
 }
 
 impl IosIapPurchaseError {
@@ -180,6 +182,10 @@ impl IosIapPurchaseError {
 
     pub fn missing_offer_parameters() -> Self {
         Self::MissingOfferParameters
+    }
+
+    pub fn unknown_purchase_error() -> Self {
+        Self::Unknown
     }
 }
 

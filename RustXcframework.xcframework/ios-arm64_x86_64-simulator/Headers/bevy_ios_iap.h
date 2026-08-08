@@ -249,6 +249,7 @@ void* __swift_bridge__$IosIapPurchaseError$invalid_offer_identifier(void);
 void* __swift_bridge__$IosIapPurchaseError$invalid_offer_price(void);
 void* __swift_bridge__$IosIapPurchaseError$invalid_offer_signature(void);
 void* __swift_bridge__$IosIapPurchaseError$missing_offer_parameters(void);
+void* __swift_bridge__$IosIapPurchaseError$unknown_purchase_error(void);
 void* __swift_bridge__$IosIapStoreKitError$unknown(void);
 void* __swift_bridge__$IosIapStoreKitError$user_cancelled(void);
 void* __swift_bridge__$IosIapStoreKitError$network_error(void* e);

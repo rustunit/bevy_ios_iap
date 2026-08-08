@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+* swift build against the Xcode 26 SDK, which added a `Product.PurchaseError` case
+* new `IosIapPurchaseError::Unknown` catches StoreKit cases added in the future
+
 ## [0.9.0] - 2026-01-17
 
 ### Changed

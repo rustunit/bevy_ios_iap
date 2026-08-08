@@ -1422,6 +1422,10 @@ extension IosIapPurchaseErrorRef {
     class public func missing_offer_parameters() -> IosIapPurchaseError {
         IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$missing_offer_parameters())
     }
+
+    class public func unknown_purchase_error() -> IosIapPurchaseError {
+        IosIapPurchaseError(ptr: __swift_bridge__$IosIapPurchaseError$unknown_purchase_error())
+    }
 }
 extension IosIapPurchaseError: Vectorizable {
     public static func vecOfSelfNew() -> UnsafeMutableRawPointer {

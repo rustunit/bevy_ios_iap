@@ -203,6 +203,9 @@ public func convert_purchase_error(_ error: (Product.PurchaseError)) -> IosIapPu
     case .invalidOfferPrice: IosIapPurchaseError.invalid_offer_price()
     case .invalidOfferSignature: IosIapPurchaseError.invalid_offer_signature()
     case .missingOfferParameters: IosIapPurchaseError.missing_offer_parameters()
+
+    @unknown default:
+        IosIapPurchaseError.unknown_purchase_error()
     }
 }
 
