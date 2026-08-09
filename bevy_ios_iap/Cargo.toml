@@ -1,6 +1,6 @@
 [package]
 name = "bevy_ios_iap"
-version = "0.9.1"
+version = "0.10.0"
 edition = "2024"
 build = "build.rs"
 readme = "../README.md"
@@ -15,11 +15,11 @@ description = "Bevy Plugin and Swift Package to provide access to iOS native Sto
 crate-type = ["staticlib", "rlib"]
 
 [dependencies]
-bevy_app = { version = "0.18", default-features = false }
-bevy_ecs = { version = "0.18", default-features = false }
-bevy_ecs_macros = { version = "0.18", default-features = false }
-bevy_log = { version = "0.18", default-features = false }
-bevy_channel_message = "0.2"
+bevy_app = { version = "0.19", default-features = false }
+bevy_ecs = { version = "0.19", default-features = false }
+bevy_ecs_macros = { version = "0.19", default-features = false }
+bevy_log = { version = "0.19", default-features = false }
+bevy_channel_message = "0.3"
 swift-bridge = "0.1"
 
 [build-dependencies]

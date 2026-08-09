@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.4] - 2026-08-09
+
+### Changed
+* bevy 0.19 upgrade
+* bevy_egui 0.41 upgrade
+
 ## [0.3] - 2025-01-17
 
 ### Changed
