@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-#[allow(unused_imports)]
+#[cfg(target_os = "ios")]
 use crate::native;
 
 /// Registers for any updates on Transactions.

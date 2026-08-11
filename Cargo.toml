@@ -1,0 +1,25 @@
+[package]
+name = "bevy_ios_iap"
+version = "0.11.0"
+edition = "2024"
+readme = "README.md"
+license = "MIT"
+authors = ["extrawurst <mail@rusticorn.com>"]
+documentation = "https://docs.rs/bevy_ios_iap"
+repository = "https://github.com/rustunit/bevy_ios_iap"
+keywords = ["bevy", "gamedev", "mobile", "ios", "storekit"]
+description = "Bevy Plugin to provide access to iOS native StoreKit2 from inside Bevy Apps"
+exclude = ["assets/"]
+
+[package.metadata.docs.rs]
+default-target = "x86_64-apple-darwin"
+
+[dependencies]
+bevy_app = { version = "0.19", default-features = false }
+bevy_ecs = { version = "0.19", default-features = false }
+bevy_log = { version = "0.19", default-features = false }
+bevy_channel_message = "0.3"
+# the JSON contract with the Swift shim; compiled everywhere so `src/wire.rs` stays testable
+# on the host
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

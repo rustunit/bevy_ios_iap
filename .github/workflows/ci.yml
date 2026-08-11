@@ -8,43 +8,45 @@ env:
 
 jobs:
   build:
-    #TODO: run and test on wasm, win and linux
     runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
+      - uses: extractions/setup-just@v2
 
       - name: Add iOS targets
-        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim
 
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: "./bevy_ios_iap"
-
-      # TODO: enable once https://github.com/rust-lang/rust-bindgen/issues/3181 is released
-      # - name: Check iOS Sim
-      #   run: |
-      #     cd bevy_ios_iap
-      #     cargo c --target=aarch64-apple-ios-sim
-      #     cargo b --target=aarch64-apple-ios-sim
-      #     cargo clippy --target=aarch64-apple-ios-sim
 
       - name: Check iOS
         run: |
-          cd bevy_ios_iap
           cargo c --target=aarch64-apple-ios
           cargo b --target=aarch64-apple-ios
           cargo clippy --target=aarch64-apple-ios
 
+      - name: Check iOS Sim
+        run: |
+          cargo c --target=aarch64-apple-ios-sim
+          cargo b --target=aarch64-apple-ios-sim
+          cargo clippy --target=aarch64-apple-ios-sim
+
       - name: Check MacOs
         run: |
-          cd bevy_ios_iap
           cargo c
           cargo b
-          cargo clippy
+          cargo clippy --all-targets
+          cargo fmt -- --check
           cargo t
+
+      # guards the JSON contract between src/wire.rs and swift/BevyIosIap.swift: if the shim's
+      # encoder no longer produces what the tests assert, the fixtures come back changed
+      - name: Swift fixtures are up to date
+        run: |
+          just swift-fixtures
+          git diff --exit-code tests/fixtures
 
   build_egui:
     runs-on: macos-latest
@@ -54,20 +56,12 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
 
       - name: Add iOS targets
-        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim x86_64-apple-ios
+        run: rustup target add aarch64-apple-ios aarch64-apple-ios-sim
 
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: "./bevy_ios_iap_egui"
-
-      # TODO: enable once https://github.com/rust-lang/rust-bindgen/issues/3181 is released
-      # - name: Check iOS Sim
-      #   run: |
-      #     cd bevy_ios_iap_egui
-      #     cargo c --target=aarch64-apple-ios-sim
-      #     cargo b --target=aarch64-apple-ios-sim
-      #     cargo clippy --target=aarch64-apple-ios-sim
 
       - name: Check iOS
         run: |
@@ -75,6 +69,13 @@ jobs:
           cargo c --target=aarch64-apple-ios
           cargo b --target=aarch64-apple-ios
           cargo clippy --target=aarch64-apple-ios
+
+      - name: Check iOS Sim
+        run: |
+          cd bevy_ios_iap_egui
+          cargo c --target=aarch64-apple-ios-sim
+          cargo b --target=aarch64-apple-ios-sim
+          cargo clippy --target=aarch64-apple-ios-sim
 
       - name: Check MacOs
         run: |

@@ -11,8 +11,10 @@
 [sh_discord]: https://img.shields.io/discord/1176858176897953872?label=discord&color=5561E6
 [lk_discord]: https://discord.gg/rQNeEnMhus
 
-Provides access to iOS native StoreKit2 Swift API from inside Bevy Apps.
-It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-generate the glue code and transport datatypes.
+Provides access to the iOS native StoreKit 2 API from inside Bevy Apps.
+
+No Swift package and no XCode setup required: the crate carries a small Swift shim that `build.rs`
+compiles and links for you, so `cargo add` is all it takes.
 
 ![demo](./assets/demo.gif)
 
@@ -37,38 +39,29 @@ It uses [Swift-Bridge](https://github.com/chinedufn/swift-bridge) to auto-genera
 
 ## Instructions
 
-1. Add to XCode: Add SPM (Swift Package Manager) dependency
-2. Add Rust dependency
-3. Setup Plugin
+1. Add Rust dependency
+2. Setup Plugin
 
-### 1. Add to XCode
+**Note:** you still have to configure your purchases in App Store Connect like for any other iOS
+app. This guide does not focus on that, as it is the same no matter what engine you use.
 
-* Add `StoreKit` framework:
-![gamekit](./assets/framework.png)
-
-* Go to `File` -> `Add Package Dependencies` and paste `https://github.com/rustunit/bevy_ios_iap.git` into the search bar on the top right:
-![xcode](./assets/xcode-spm.png)
-
-* Don't forget to configure your purchases like for any other iOS app, this guide will not focus on that, as it is the same no matter what engine you use. this guide focuses on setting things up in a bevy project.
-
-**Note:**
-The rust crate used must be **exactly** the same version as the Swift Package (for binary compatibility reasons).
-I suggest using a specific version (like `0.2.0` in the screenshot) to make sure to always use binary matching versions!
-
-### 2. Add Rust dependency
+### 1. Add Rust dependency
 
 ```
 cargo add bevy_ios_iap
 ```
 
-or
+Building for iOS requires the XCode toolchain (`xcrun`, `swiftc`), which any iOS project has
+anyway. `StoreKit` and the Swift shim are linked automatically - no XCode project changes needed.
 
-```toml
-# always pin to the same exact version you also of the Swift package
-bevy_ios_iap = { version = "=0.10" }
+The shim is built against iOS 16 by default. Set `IPHONEOS_DEPLOYMENT_TARGET` to raise it, and
+make sure it matches what the rest of your app is built with:
+
+```
+IPHONEOS_DEPLOYMENT_TARGET=16.0 cargo build --target aarch64-apple-ios
 ```
 
-### 3. Setup Plugin
+### 2. Setup Plugin
 
 Initialize Bevy Plugin:
 
@@ -136,10 +129,10 @@ fn process_iap_events(
 
 ## Local development
 
-1. Build locally via `just build`
-2. Change the `Package.swift` to use the locally built `xcframework`
-3. Switch XCode package dependency to use local repo via path
-4. Patch `Cargo.toml` to use local repository
+* `just check` runs the checks, lints and tests for both crates
+* `just swift-fixtures` regenerates `tests/fixtures/` using the shim's own encoder - run it after
+  changing any DTO in [`swift/BevyIosIap.swift`](./swift/BevyIosIap.swift), otherwise the tests in
+  [`src/wire.rs`](./src/wire.rs) that guard the Rust/Swift JSON contract will fail
 
 ## Our Other Crates
 
@@ -158,7 +151,7 @@ fn process_iap_events(
 
 |bevy|crate|
 |---|---|
-|0.19|0.10,main|
+|0.19|0.10,0.11,main|
 |0.18|0.9|
 |0.17|0.8|
 |0.16|0.6,0.7|
