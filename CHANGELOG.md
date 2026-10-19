@@ -7,27 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-## [0.11.0] - 2026-08-10
+## [0.11.0] - 2026-10-19
 
 ### Changed
-* the Swift package dependency is gone: the crate now carries its own StoreKit 2 shim, which
-  `build.rs` compiles with `swiftc` and links statically. `cargo add bevy_ios_iap` is all that is
-  needed, the SPM package and the `RustXcframework.xcframework` release artifact are no longer
-  published
-* the XCode setup steps (adding the SPM package, linking `StoreKit`, keeping the crate and package
-  versions in lockstep) are no longer needed
-* repo flattened: the crate now lives at the repository root
-* iOS simulator support is back: without `swift-bridge` there is no `rust-bindgen` involvement, so
-  `aarch64-apple-ios-sim` builds again
-* `swift-bridge` replaced by a hand-written C ABI carrying JSON, which is covered by tests fed
-  from the shim's own encoder
-* responses arriving before the plugin is built are logged and dropped instead of panicking
-  inside a callback
-* a response the crate cannot parse is now reported as an error on that request instead of
-  leaving it unanswered
+* no more Swift package: the crate ships its own StoreKit 2 shim, built and linked by `build.rs`.
+  No Xcode setup needed anymore, the SPM package and xcframework are no longer published
+* `swift-bridge` replaced by a small C ABI, which brings back iOS simulator support
+* unparsable responses are reported as errors instead of left unanswered, early responses no longer panic
 
 ### Added
-* `IPHONEOS_DEPLOYMENT_TARGET` selects what the Swift shim is built against (defaults to `16.0`)
+* `IPHONEOS_DEPLOYMENT_TARGET` sets the shim's deployment target (default `16.0`)
 
 ## [0.10.0] - 2026-08-09
 
