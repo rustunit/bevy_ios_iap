@@ -148,10 +148,7 @@ where
         Self(ec, PhantomData)
     }
 
-    pub fn on_response<RB: Bundle, RM, OR: IntoObserverSystem<T, RB, RM>>(
-        &mut self,
-        on_response: OR,
-    ) -> &mut Self {
+    pub fn on_response<RM, OR: IntoObserverSystem<T, RM>>(&mut self, on_response: OR) -> &mut Self {
         self.0.observe(on_response);
         self
     }
