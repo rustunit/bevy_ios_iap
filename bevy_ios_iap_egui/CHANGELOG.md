@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.6] - 2026-10-19
+
 ### Changed
+* `bevy_ios_iap` 0.12 upgrade
 * bevy 0.20 upgrade
 * bevy_egui 0.43 upgrade
 
