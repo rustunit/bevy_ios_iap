@@ -5,6 +5,6 @@ edition = "2021"
 
 [dependencies]
 bevy_ios_iap = { path = ".." }
-bevy = { version = "0.19", default-features = false }
-bevy_egui = { version = "0.41", default-features = false }
-egui_extras = { version = "0.35" }
+bevy = { version = "0.20", default-features = false }
+bevy_egui = { version = "0.43", default-features = false }
+egui_extras = { version = "0.36" }
