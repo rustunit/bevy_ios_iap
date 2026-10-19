@@ -2,7 +2,6 @@
 name = "bevy_ios_iap"
 version = "0.12.0"
 edition = "2024"
-readme = "README.md"
 license = "MIT"
 authors = ["extrawurst <mail@rusticorn.com>"]
 documentation = "https://docs.rs/bevy_ios_iap"
@@ -17,9 +16,14 @@ default-target = "x86_64-apple-darwin"
 [dependencies]
 bevy_app = { version = "0.20", default-features = false }
 bevy_ecs = { version = "0.20", default-features = false }
-bevy_log = { version = "0.20", default-features = false }
-bevy_channel_message = "0.4"
 # the JSON contract with the Swift shim; compiled everywhere so `src/wire.rs` stays testable
 # on the host
 serde = { version = "1", features = ["derive"] }
+
+[target.'cfg(target_os = "ios")'.dependencies]
+bevy_log = { version = "0.20", default-features = false }
+bevy_channel_message = "0.4"
+serde_json = "1"
+
+[dev-dependencies]
 serde_json = "1"
