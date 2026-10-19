@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+* `bevy_log`, `bevy_channel_message` and `serde_json` are only pulled in on iOS
+
 ## [0.12.0] - 2026-10-19
 
 ### Changed
