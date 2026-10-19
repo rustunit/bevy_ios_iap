@@ -1,10 +1,6 @@
 .DS_Store
-/.build
-/Packages
-xcuserdata/
-DerivedData/
-.swiftpm/configuration/registries.json
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
+target/
+Cargo.lock
 bevy_ios_iap_egui/target
 bevy_ios_iap_egui/Cargo.lock

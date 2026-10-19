@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.11.0] - 2026-10-19
+
+### Changed
+* no more Swift package: the crate ships its own StoreKit 2 shim, built and linked by `build.rs`.
+  No Xcode setup needed anymore, the SPM package and xcframework are no longer published
+* `swift-bridge` replaced by a small C ABI, which brings back iOS simulator support
+* unparsable responses are reported as errors instead of left unanswered, early responses no longer panic
+
+### Added
+* `IPHONEOS_DEPLOYMENT_TARGET` sets the shim's deployment target (default `16.0`)
+
 ## [0.10.0] - 2026-08-09
 
 ### Changed

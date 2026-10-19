@@ -1,9 +1,16 @@
+// Off iOS the crate is an inert shim: every method is a no-op and nothing ever constructs a
+// response, so the types and their constructors are unused by design. iOS still gets the full
+// dead-code check.
+#![cfg_attr(not(target_os = "ios"), allow(dead_code))]
+
 mod methods;
+#[cfg(target_os = "ios")]
 mod native;
 mod plugin;
 mod request;
 mod response;
 mod transaction;
+mod wire;
 
 pub use methods::{
     all_transactions, current_entitlements, finish_transaction, get_products, init, purchase,
